@@ -53,7 +53,7 @@ img {
   width: 95%;
   height: auto;
   max-height: 95%;
-  padding: 20px 15px 20px 25px;
+  padding: 20px 5px 20px 25px;
   background: $white;
   border-radius: $radius-m;
 
@@ -69,11 +69,11 @@ img {
   width: 100%;
   height: auto;
   max-height: 500px;
-  padding: 0 10px 0 0;
+  padding: 0 20px 0 0;
   overflow-y: scroll;
 
   &::-webkit-scrollbar {
-    width: 4px;
+    width: 3px;
     background: transparent;
   }
 
@@ -82,8 +82,8 @@ img {
   }
 
   &::-webkit-scrollbar-thumb {
-    border-radius: 4px;
-    background: $red;
+    border-radius: 13px;
+    background: $brown;
   }
 }
 
