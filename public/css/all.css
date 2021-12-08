@@ -59,6 +59,44 @@ img {
   position: relative;
 }
 
+.dailog-frame {
+  width: 95%;
+  height: auto;
+  max-height: 95%;
+  padding: 20px 15px 20px 25px;
+  background: #fff;
+  border-radius: 13px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  text-align: justify;
+}
+
+.dailog-container {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+  padding: 0 10px 0 0;
+  overflow-y: scroll;
+}
+
+.dailog-container::-webkit-scrollbar {
+  width: 4px;
+  background: transparent;
+}
+
+.dailog-container::-webkit-scrollbar-track {
+  margin: 0;
+}
+
+.dailog-container::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: #A7414A;
+}
+
 @-webkit-keyframes fadeIn {
   0% {
     opacity: 0;

@@ -49,6 +49,44 @@ img {
   position: relative;
 }
 
+.dailog-frame {
+  width: 95%;
+  height: auto;
+  max-height: 95%;
+  padding: 20px 15px 20px 25px;
+  background: $white;
+  border-radius: $radius-m;
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  text-align: justify;
+}
+
+.dailog-container {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+  padding: 0 10px 0 0;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-track {
+    margin: 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: $red;
+  }
+}
+
 @keyframes fadeIn {
   0% {
     opacity: 0;
