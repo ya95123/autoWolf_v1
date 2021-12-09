@@ -2,7 +2,7 @@
 
 .title-frame {
   width: 100%;
-  height: 320px;
+  height: 40%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11,14 +11,14 @@
 
 .game-title {
   color: $white;
-  font-size: $fs-title;
+  font-size: $fs-title-pc;
   font-weight: $fw-bolder;
-  letter-spacing: 10px;
+  letter-spacing: 12px;
   text-align: center;
   text-shadow: 0 4px 14px $brown;
   line-height: 1;
 
-  transform: translateX(3px);
+  transform: translateX(4px);
   position: relative;
   z-index: 10;
   animation: titleIn 1.8s;
@@ -26,7 +26,7 @@
   &::before {
     content: url(../img/index/title_bg.svg);
     display: block;
-    width: 420px;
+    width: 500px;
     position: absolute;
     left: 50%;
     top: 50%;
@@ -61,7 +61,9 @@
   font-weight: $fw-bold;
   letter-spacing: 4px;
   cursor: pointer;
+  opacity: 0;
   transition: $trans-text;
+  animation: fadeIn 0.65s 1.5s forwards;
 
   &:hover {
     color: $gold;
@@ -76,18 +78,52 @@
   }
 }
 
-// 說明
-
 @keyframes titleIn {
   0% {
-    letter-spacing: 18px;
+    letter-spacing: 38px;
     text-shadow: none;
     opacity: 0.2;
   }
 
   100% {
-    letter-spacing: 10px;
+    letter-spacing: 12px;
     text-shadow: 0 4px 14px $brown;
     opacity: 1;
+  }
+}
+
+@media (max-width:1024px) {
+  .title-frame {
+    height: 30%;
+  }
+}
+
+@media (max-width:767px) {
+  .title-frame {
+    height: 320px;
+  }
+
+  .game-title {
+    font-size: $fs-title;
+    letter-spacing: 10px;
+    transform: translateX(3px);
+
+    &::before {
+      width: 420px;
+    }
+  }
+
+  @keyframes titleIn {
+    0% {
+      letter-spacing: 18px;
+      text-shadow: none;
+      opacity: 0.2;
+    }
+
+    100% {
+      letter-spacing: 10px;
+      text-shadow: 0 4px 14px $brown;
+      opacity: 1;
+    }
   }
 }

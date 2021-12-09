@@ -1,6 +1,6 @@
 .title-frame {
   width: 100%;
-  height: 320px;
+  height: 40%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -15,15 +15,15 @@
 
 .game-title {
   color: #fff;
-  font-size: 52px;
+  font-size: 68px;
   font-weight: 900;
-  letter-spacing: 10px;
+  letter-spacing: 12px;
   text-align: center;
   text-shadow: 0 4px 14px #563838;
   line-height: 1;
-  -webkit-transform: translateX(3px);
-      -ms-transform: translateX(3px);
-          transform: translateX(3px);
+  -webkit-transform: translateX(4px);
+      -ms-transform: translateX(4px);
+          transform: translateX(4px);
   position: relative;
   z-index: 10;
   -webkit-animation: titleIn 1.8s;
@@ -33,7 +33,7 @@
 .game-title::before {
   content: url(../img/index/title_bg.svg);
   display: block;
-  width: 420px;
+  width: 500px;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -72,9 +72,12 @@
   font-weight: 500;
   letter-spacing: 4px;
   cursor: pointer;
+  opacity: 0;
   -webkit-transition: 0.25s;
   -o-transition: 0.25s;
   transition: 0.25s;
+  -webkit-animation: fadeIn 0.65s 1.5s forwards;
+          animation: fadeIn 0.65s 1.5s forwards;
 }
 
 .slect-item:hover {
@@ -91,12 +94,12 @@
 
 @-webkit-keyframes titleIn {
   0% {
-    letter-spacing: 18px;
+    letter-spacing: 38px;
     text-shadow: none;
     opacity: 0.2;
   }
   100% {
-    letter-spacing: 10px;
+    letter-spacing: 12px;
     text-shadow: 0 4px 14px #563838;
     opacity: 1;
   }
@@ -104,13 +107,59 @@
 
 @keyframes titleIn {
   0% {
-    letter-spacing: 18px;
+    letter-spacing: 38px;
     text-shadow: none;
     opacity: 0.2;
   }
   100% {
-    letter-spacing: 10px;
+    letter-spacing: 12px;
     text-shadow: 0 4px 14px #563838;
     opacity: 1;
+  }
+}
+
+@media (max-width: 1024px) {
+  .title-frame {
+    height: 30%;
+  }
+}
+
+@media (max-width: 767px) {
+  .title-frame {
+    height: 320px;
+  }
+  .game-title {
+    font-size: 52px;
+    letter-spacing: 10px;
+    -webkit-transform: translateX(3px);
+        -ms-transform: translateX(3px);
+            transform: translateX(3px);
+  }
+  .game-title::before {
+    width: 420px;
+  }
+  @-webkit-keyframes titleIn {
+    0% {
+      letter-spacing: 18px;
+      text-shadow: none;
+      opacity: 0.2;
+    }
+    100% {
+      letter-spacing: 10px;
+      text-shadow: 0 4px 14px #563838;
+      opacity: 1;
+    }
+  }
+  @keyframes titleIn {
+    0% {
+      letter-spacing: 18px;
+      text-shadow: none;
+      opacity: 0.2;
+    }
+    100% {
+      letter-spacing: 10px;
+      text-shadow: 0 4px 14px #563838;
+      opacity: 1;
+    }
   }
 }
