@@ -25,6 +25,7 @@ body {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  overflow: hidden;
 }
 
 ::-moz-selection {
@@ -50,6 +51,10 @@ img {
   display: none !important;
 }
 
+.no-show {
+  opacity: 0 !important;
+}
+
 #app {
   width: 100%;
   max-width: 1024px;
@@ -72,24 +77,31 @@ img {
 
 .dailog-frame {
   width: 95%;
+  max-width: 600px;
   height: auto;
   max-height: 95%;
   padding: 20px 5px 20px 25px;
   background: #fff;
   border-radius: 13px;
+  -webkit-transition: opacity 0.15s;
+  -o-transition: opacity 0.15s;
+  transition: opacity 0.15s;
+  -webkit-animation: fadeIn 0.15s;
+          animation: fadeIn 0.15s;
   position: absolute;
   left: 50%;
   top: 50%;
   -webkit-transform: translate(-50%, -50%);
       -ms-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
+  z-index: 99;
   text-align: justify;
 }
 
 .dailog-container {
   width: 100%;
   height: auto;
-  max-height: 500px;
+  max-height: 650px;
   padding: 0 20px 0 0;
   overflow-y: scroll;
 }
@@ -100,12 +112,27 @@ img {
 }
 
 .dailog-container::-webkit-scrollbar-track {
-  margin: 0;
+  margin: 6px 0;
 }
 
 .dailog-container::-webkit-scrollbar-thumb {
   border-radius: 13px;
-  background: #563838;
+  background: #3333;
+}
+
+.dailog-close {
+  width: 22px;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  cursor: pointer;
+  -webkit-transition: 0.25s;
+  -o-transition: 0.25s;
+  transition: 0.25s;
+}
+
+.dailog-close:hover {
+  opacity: 0.75;
 }
 
 @-webkit-keyframes fadeIn {
@@ -130,5 +157,14 @@ img {
   #app {
     max-width: 320px;
     max-height: 568px;
+  }
+  .dailog-frame {
+    width: 90vw;
+    max-height: 95vh;
+  }
+  .dailog-container {
+    width: 100%;
+    height: auto;
+    max-height: calc(95vh - 40px);
   }
 }

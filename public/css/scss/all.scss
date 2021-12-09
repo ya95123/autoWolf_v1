@@ -20,6 +20,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
 ::selection {
@@ -40,6 +41,10 @@ img {
   display: none !important;
 }
 
+.no-show {
+  opacity: 0 !important;
+}
+
 #app {
   width: 100%;
   max-width: 1024px;
@@ -55,16 +60,20 @@ img {
 
 .dailog-frame {
   width: 95%;
+  max-width: 600px;
   height: auto;
   max-height: 95%;
   padding: 20px 5px 20px 25px;
   background: $white;
   border-radius: $radius-m;
+  transition: opacity 0.15s;
+  animation: fadeIn 0.15s;
 
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  z-index: 99;
 
   text-align: justify;
 }
@@ -72,7 +81,7 @@ img {
 .dailog-container {
   width: 100%;
   height: auto;
-  max-height: 500px;
+  max-height: 650px;
   padding: 0 20px 0 0;
   overflow-y: scroll;
 
@@ -82,12 +91,25 @@ img {
   }
 
   &::-webkit-scrollbar-track {
-    margin: 0;
+    margin: 6px 0;
   }
 
   &::-webkit-scrollbar-thumb {
     border-radius: 13px;
-    background: $brown;
+    background: #3333;
+  }
+}
+
+.dailog-close {
+  width: 22px;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  cursor: pointer;
+  transition: $trans-text;
+
+  &:hover {
+    opacity: 0.75;
   }
 }
 
@@ -107,5 +129,17 @@ img {
   #app {
     max-width: 320px;
     max-height: 568px;
+  }
+
+  .dailog-frame {
+    width: 90vw;
+    // max-width: 600px;
+    max-height: 95vh;
+  }
+
+  .dailog-container {
+    width: 100%;
+    height: auto;
+    max-height: calc(95vh - 40px);
   }
 }
