@@ -1,7 +1,63 @@
 @import "variable.scss";
 
-#setting {}
+#setting {
+  ::selection {
+    color: $black;
+  }
+
+  .model {
+    padding: 10px 10px;
+    margin: 0 0 12px;
+    border: 3px solid $black;
+    border-radius: $radius-m;
+    background: $green;
+    color: $white;
+    font-size: $fs-l;
+    letter-spacing: 2px;
+    line-height: 1.15;
+    cursor: pointer;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    &:nth-last-child(1) {
+      margin: 0;
+    }
+
+    &:hover {
+      background: $red;
+    }
+  }
+
+  .model-character {
+    font-size: $fs-ms;
+  }
+
+  .model-num {
+    margin: 0 0 0 8px;
+    white-space: nowrap;
+  }
+}
 
 @media (max-width:1024px) {}
 
-@media (max-width:767px) {}
+@media (max-width:767px) {
+  #setting {
+    .model {
+      padding: 8px 10px;
+      margin: 0 0 12px;
+      border: 2px solid $black;
+      font-size: $fs-ml;
+      letter-spacing: 1px;
+    }
+
+    .model-character {
+      font-size: $fs-s;
+    }
+
+    .model-num {
+      font-size: $fs-ms;
+    }
+  }
+}

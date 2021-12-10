@@ -24,9 +24,7 @@ body {
 }
 
 ::selection {
-  // background: $black;
   color: $gold;
-  filter: hue-rotate(45deg);
 }
 
 a {
@@ -65,6 +63,7 @@ img {
   max-height: 95%;
   padding: 20px 5px 20px 25px;
   background: $white;
+  border: 3px solid $black;
   border-radius: $radius-m;
   transition: opacity 0.15s;
   animation: fadeIn 0.15s;
@@ -133,13 +132,20 @@ img {
 
   .dailog-frame {
     width: 90vw;
-    // max-width: 600px;
     max-height: 95vh;
+    padding: 20px 0px 20px 15px;
   }
 
   .dailog-container {
     width: 100%;
     height: auto;
-    max-height: calc(95vh - 40px);
+    max-height: calc(95vh - 60px);
+    padding: 0 15px 0 0;
+  }
+
+  .dailog-close {
+    width: 18px;
+    right: 3px;
+    top: 3px;
   }
 }
