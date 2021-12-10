@@ -1,5 +1,5 @@
 #bg {
-  width: 95%;
+  width: 85%;
   position: absolute;
   left: 50%;
   top: 10%;
@@ -63,6 +63,11 @@
 #setting .model-num {
   margin: 0 0 0 8px;
   white-space: nowrap;
+}
+
+#giveCharacter {
+  width: 100%;
+  height: 100%;
 }
 
 @-webkit-keyframes bgShine {

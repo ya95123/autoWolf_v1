@@ -133,6 +133,14 @@ img {
   opacity: 0.75;
 }
 
+.text-Top {
+  color: #fff;
+  font-size: 52px;
+  letter-spacing: 2px;
+  text-align: center;
+  margin: 15% 0 5%;
+}
+
 @-webkit-keyframes fadeIn {
   0% {
     opacity: 0;
@@ -148,6 +156,13 @@ img {
   }
   100% {
     opacity: 1;
+  }
+}
+
+@media (max-width: 1024px) {
+  .text-Top {
+    font-size: 68px;
+    margin: 25% 0 10%;
   }
 }
 
@@ -171,5 +186,9 @@ img {
     width: 18px;
     right: 3px;
     top: 3px;
+  }
+  .text-Top {
+    font-size: 52px;
+    margin: 25% 0 10%;
   }
 }
