@@ -61,9 +61,9 @@
   font-weight: $fw-bold;
   letter-spacing: 4px;
   cursor: pointer;
-  opacity: 0;
   transition: $trans-text;
-  animation: fadeIn 0.65s 1.5s forwards;
+  // opacity: 0;
+  // animation: fadeIn 0.65s 1.5s forwards;
 
   &:hover {
     color: $gold;

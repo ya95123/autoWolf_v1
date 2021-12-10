@@ -72,12 +72,9 @@
   font-weight: 500;
   letter-spacing: 4px;
   cursor: pointer;
-  opacity: 0;
   -webkit-transition: 0.25s;
   -o-transition: 0.25s;
   transition: 0.25s;
-  -webkit-animation: fadeIn 0.65s 1.5s forwards;
-          animation: fadeIn 0.65s 1.5s forwards;
 }
 
 .slect-item:hover {
