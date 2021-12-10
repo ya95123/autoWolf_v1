@@ -8,9 +8,12 @@
   transform: translateX(-50%);
   opacity: 0.5;
   animation: bgShine 3s infinite alternate;
+  pointer-events: none;
 }
 
 #setting {
+  transition: $trans-text;
+
   ::selection {
     color: $black;
   }

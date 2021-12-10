@@ -9,6 +9,13 @@
   opacity: 0.5;
   -webkit-animation: bgShine 3s infinite alternate;
           animation: bgShine 3s infinite alternate;
+  pointer-events: none;
+}
+
+#setting {
+  -webkit-transition: 0.25s;
+  -o-transition: 0.25s;
+  transition: 0.25s;
 }
 
 #setting ::-moz-selection {
