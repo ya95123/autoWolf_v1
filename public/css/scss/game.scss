@@ -1,5 +1,15 @@
 @import "variable.scss";
 
+#bg {
+  width: 95%;
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  transform: translateX(-50%);
+  opacity: 0.5;
+  animation: bgShine 3s infinite alternate;
+}
+
 #setting {
   ::selection {
     color: $black;
@@ -37,6 +47,16 @@
   .model-num {
     margin: 0 0 0 8px;
     white-space: nowrap;
+  }
+}
+
+@keyframes bgShine {
+  0% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 0.75;
   }
 }
 

@@ -1,3 +1,16 @@
+#bg {
+  width: 95%;
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  -webkit-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+          transform: translateX(-50%);
+  opacity: 0.5;
+  -webkit-animation: bgShine 3s infinite alternate;
+          animation: bgShine 3s infinite alternate;
+}
+
 #setting ::-moz-selection {
   color: #282726;
 }
@@ -43,6 +56,24 @@
 #setting .model-num {
   margin: 0 0 0 8px;
   white-space: nowrap;
+}
+
+@-webkit-keyframes bgShine {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.75;
+  }
+}
+
+@keyframes bgShine {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.75;
+  }
 }
 
 @media (max-width: 767px) {
