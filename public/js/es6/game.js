@@ -57,14 +57,15 @@ const selectModel = (idx) => {
 
   // 預設模式
   modelPlaying = cate[idx] // 玩的模式
-  setting.classList.add("no-show") //關閉 setting
+  // 給身分
+  give()
+
+  // 關閉 setting，打開發身分
+  setting.classList.add("no-show")
   setTimeout(() => {
     setting.classList.add("none")
     giveCharacter.classList.remove("none")
   }, 250)
-
-  // 給身分
-  give()
 }
 
 // *給身分
@@ -96,10 +97,12 @@ const give = () => {
         "team": team
       }
     )
+
+    // TODO 創出發身分 html
   }
 
-  console.log(modelPlaying.characterAll)
-  console.log(characterList)
+  console.log(modelPlaying.characterAll) // 發完身分會剩 []
+  console.log(characterList) // 身分順序
 }
 
 // *click 模式選擇
