@@ -70,6 +70,53 @@
   height: 100%;
 }
 
+#giveCharacter .give-round {
+  width: 400px;
+  height: 400px;
+  margin: auto;
+  background: #fff;
+  border: 12px solid #282726;
+  border-radius: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  position: relative;
+  cursor: pointer;
+}
+
+#giveCharacter .give-num {
+  font-size: 105px;
+  font-weight: 900;
+  -webkit-transition: 0.25s;
+  -o-transition: 0.25s;
+  transition: 0.25s;
+}
+
+#giveCharacter .give-charactor {
+  font-size: 68px !important;
+}
+
+#giveCharacter .give-tips {
+  font-size: 16px;
+  opacity: 0.8;
+  position: absolute;
+  left: 50%;
+  bottom: 25%;
+  -webkit-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+          transform: translateX(-50%);
+}
+
 @-webkit-keyframes bgShine {
   0% {
     opacity: 0.5;

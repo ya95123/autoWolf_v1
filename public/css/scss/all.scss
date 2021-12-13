@@ -43,6 +43,14 @@ img {
   opacity: 0 !important;
 }
 
+.text-red {
+  color: $red !important;
+}
+
+.text-green {
+  color: $green !important;
+}
+
 #app {
   width: 100%;
   max-width: 1024px;

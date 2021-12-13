@@ -59,6 +59,40 @@
   // background: #9993;
 
   // TODO give-round
+  .give-round {
+    width: 400px;
+    height: 400px;
+    margin: auto;
+    background: $white;
+    border: 12px solid $black;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .give-num {
+    font-size: $fs-number-pc;
+    font-weight: $fw-bolder;
+    transition: $trans-text;
+  }
+
+  .give-charactor {
+    font-size: $fs-title-pc !important;
+  }
+
+  .give-tips {
+    font-size: $fs-m;
+    opacity: 0.8;
+
+    position: absolute;
+    left: 50%;
+    bottom: 25%;
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes bgShine {
