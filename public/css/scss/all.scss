@@ -21,6 +21,7 @@ body {
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  transition: background $trans-normal;
 }
 
 ::selection {
@@ -49,6 +50,11 @@ img {
 
 .text-green {
   color: $green !important;
+}
+
+.night {
+  background: $black !important;
+  cursor: pointer;
 }
 
 #app {
@@ -122,7 +128,7 @@ img {
 
 .text-Top {
   color: $white;
-  font-size: $fs-title;
+  font-size: $fs-title-pc;
   letter-spacing: 2px;
   text-align: center;
   margin: 0 0 5%;
@@ -138,11 +144,7 @@ img {
   }
 }
 
-@media (max-width:1024px) {
-  .text-Top {
-    font-size: $fs-title-pc;
-  }
-}
+@media (max-width:1024px) {}
 
 @media (max-width:767px) {
   #app {
@@ -170,6 +172,6 @@ img {
   }
 
   .text-Top {
-    font-size: $fs-title;
+    font-size: $fs-title - 4px;
   }
 }

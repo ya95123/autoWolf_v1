@@ -26,6 +26,9 @@ body {
       -ms-flex-align: center;
           align-items: center;
   overflow: hidden;
+  -webkit-transition: background 0.5s;
+  -o-transition: background 0.5s;
+  transition: background 0.5s;
 }
 
 ::-moz-selection {
@@ -58,6 +61,11 @@ img {
 
 .text-green {
   color: #6A8A82 !important;
+}
+
+.night {
+  background: #282726 !important;
+  cursor: pointer;
 }
 
 #app {
@@ -143,7 +151,7 @@ img {
 
 .text-Top {
   color: #fff;
-  font-size: 52px;
+  font-size: 68px;
   letter-spacing: 2px;
   text-align: center;
   margin: 0 0 5%;
@@ -164,12 +172,6 @@ img {
   }
   100% {
     opacity: 1;
-  }
-}
-
-@media (max-width: 1024px) {
-  .text-Top {
-    font-size: 68px;
   }
 }
 
@@ -195,6 +197,6 @@ img {
     top: 3px;
   }
   .text-Top {
-    font-size: 52px;
+    font-size: 48px;
   }
 }
