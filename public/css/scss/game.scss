@@ -111,6 +111,15 @@
   }
 }
 
+#gamming {
+  .gamming-tips {
+    font-size: $fs-ml;
+    text-align: center;
+    color: $white;
+    opacity: 0.8;
+  }
+}
+
 @keyframes bgShine {
   0% {
     opacity: 0.5;
@@ -121,7 +130,13 @@
   }
 }
 
-@media (max-width:1024px) {}
+@media (max-width:1024px) {
+  #gamming {
+    .gamming-tips {
+      font-size: $fs-xl;
+    }
+  }
+}
 
 @media (max-width:767px) {
   #setting {
@@ -161,6 +176,12 @@
 
     .give-tips {
       bottom: 18%;
+    }
+  }
+
+  #gamming {
+    .gamming-tips {
+      font-size: $fs-m;
     }
   }
 }

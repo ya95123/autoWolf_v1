@@ -1,6 +1,7 @@
 // variables
 const setting = document.getElementById("setting")
 const giveCharacter = document.getElementById("giveCharacter")
+const gamming = document.getElementById("gamming")
 const giveRound = document.querySelector(".give-round")
 const models = document.querySelectorAll(".model")
 const modelData = {
@@ -12,7 +13,8 @@ const modelData = {
       "godsNum": "",
       "mansNum": "",
       "chracterText": "",
-      "characterAll": []
+      "characterAll": [],
+      "processNight": ["天黑"]
     },
     {
       "model": "一般局",
@@ -21,7 +23,8 @@ const modelData = {
       "godsNum": 3,
       "mansNum": 3,
       "chracterText": "(3狼,預,女,獵,3民)",
-      "characterAll": ["狼人", "狼人", "狼人", "預言家", "女巫", "獵人", "平民", "平民", "平民"]
+      "characterAll": ["狼人", "狼人", "狼人", "預言家", "女巫", "獵人", "平民", "平民", "平民"],
+      "processNight": ["天黑", "預", "狼", "巫", "天亮"]
     },
     {
       "model": "狼王局",
@@ -30,7 +33,8 @@ const modelData = {
       "godsNum": 4,
       "mansNum": 3,
       "chracterText": "(狼王,2狼,預,女,獵,騎,3民)",
-      "characterAll": ["狼王", "狼人", "狼人", "預言家", "女巫", "獵人", "騎士", "平民", "平民", "平民"]
+      "characterAll": ["狼王", "狼人", "狼人", "預言家", "女巫", "獵人", "騎士", "平民", "平民", "平民"],
+      "processNight": ["天黑", "預", "狼", "巫", "天亮"]
     },
   ]
 }
@@ -65,7 +69,7 @@ const selectModel = (idx) => {
   // 發身分 畫面
   giveHtml()
 
-  // 關閉 setting，打開發身分
+  // 關閉 setting，打開 giveCharacter 發身分
   setting.classList.add("no-show")
   setTimeout(() => {
     setting.classList.add("none")
@@ -117,6 +121,7 @@ const giveHtml = () => {
   let lastOrder = characterList.length - 1
 
   // 進入畫面初始
+  giveRound.setAttribute("data-give", "toCharacter")
   giveNum.innerText = characterList[giveCharacterOrder].id
   giveTips.innerText = "點擊看身分"
 
@@ -130,18 +135,23 @@ const giveHtml = () => {
 
       // round 旋轉，關閉 num，顯示 character
       giveRound.classList.add("round-rotate")
-      giveNum.classList.add("none")
-      give_character.classList.remove("none")
       give_character.classList.add("text-rotate")
       giveTips.classList.add("tips-rotate")
+      setTimeout(() => {
+        giveNum.classList.add("none")
+        give_character.classList.remove("none")
+      }, 120)
 
       // 狀態調為 "charecter"
       giveRound.setAttribute("data-give", "toNum")
       return
     }
-    // TODO 最後一號人物時開使遊戲
+    // *最後一號人物時開使遊戲
     if (giveCharacterOrder === lastOrder) {
-      console.log("開始遊戲")
+      night()
+      // 關閉 giveCharacter，打開 gamming
+      giveCharacter.classList.add("none")
+      gamming.classList.remove("none")
       return
     }
     // *身分 - click 給下一位順序
@@ -152,17 +162,33 @@ const giveHtml = () => {
 
     // round 旋轉，關閉 num，顯示 character
     giveRound.classList.remove("round-rotate")
-    giveNum.classList.remove("none")
-    give_character.classList.add("none")
     give_character.classList.remove("text-rotate")
     giveTips.classList.remove("tips-rotate")
+    setTimeout(() => {
+      giveNum.classList.remove("none")
+      give_character.classList.add("none")
+    }, 120)
 
     // 狀態調為 "charecter"
     giveRound.setAttribute("data-give", "toCharacter")
   }, false)
 }
 
-// *click 模式選擇
+// TODO 遊戲 - 天黑
+const night = () => {
+  const nightTop = document.getElementById("night-top")
+  const nightTips = document.getElementById("night-tips")
+
+  console.log("night")
+  // 天黑
+  document.body.classList.add("night")
+  nightTop.innerText = "天黑請閉眼"
+  nightTips.innerText = "點擊畫面下一步"
+
+  // TODO 根據 processNight 跑流程
+}
+
+// *模式畫面 & click 模式選擇
 models.forEach((item, idx) => {
   // 插入 html
   item.innerHTML =

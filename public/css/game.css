@@ -139,6 +139,13 @@
           transform: translateX(-50%);
 }
 
+#gamming .gamming-tips {
+  font-size: 18px;
+  text-align: center;
+  color: #fff;
+  opacity: 0.8;
+}
+
 @-webkit-keyframes bgShine {
   0% {
     opacity: 0.5;
@@ -154,6 +161,12 @@
   }
   100% {
     opacity: 0.75;
+  }
+}
+
+@media (max-width: 1024px) {
+  #gamming .gamming-tips {
+    font-size: 23px;
   }
 }
 
@@ -186,5 +199,8 @@
   }
   #giveCharacter .give-tips {
     bottom: 18%;
+  }
+  #gamming .gamming-tips {
+    font-size: 16px;
   }
 }

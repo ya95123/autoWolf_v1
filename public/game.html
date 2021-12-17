@@ -17,13 +17,14 @@
     <!-- *設定模式 -->
     <section id="setting" class="dailog-frame">
       <div class="dailog-container">
+        <!-- 有幾個模式要先設好幾個 model -->
         <div class="model"></div>
         <div class="model"></div>
         <div class="model"></div>
       </div>
     </section>
 
-    <!-- *自訂模式 -->
+    <!-- TODO 自訂模式 -->
     <section id="custom" class="dailog-frame none">
       <div class="dailog-container">
       </div>
@@ -32,12 +33,22 @@
     <!-- *發身分 -->
     <section id="giveCharacter" class="none">
       <h1 class="text-Top">發身分</h1>
-      <!-- TODO RWD & 點擊後的變化 js 控制 & 紀錄 -->
-      <p class="give-round" data-give="toCharacter">
+      <p class="give-round" data-give="">
         <span class="give-num"></span>
         <span class="give-character none"></span>
         <span class="give-tips"></span>
       </p>
+    </section>
+
+    <!-- TODO 遊戲流程 -->
+    <section id="gamming" class="none">
+      <!-- 天黑 -->
+      <div id="gamming-night">
+        <h1 id="night-top" class="text-Top"></h1>
+        <p id="night-tips" class="gamming-tips"></p>
+      </div>
+      <!-- 天亮 -->
+      <div id="gamming-morning" class="none"></div>
     </section>
   </div>
 
