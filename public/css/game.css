@@ -73,7 +73,7 @@
 #giveCharacter .give-round {
   width: 400px;
   height: 400px;
-  margin: auto;
+  margin: 0 auto 5%;
   background: #fff;
   border: 12px solid #282726;
   border-radius: 50%;
