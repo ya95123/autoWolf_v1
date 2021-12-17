@@ -146,7 +146,7 @@ img {
   font-size: 52px;
   letter-spacing: 2px;
   text-align: center;
-  margin: 15% 0 5%;
+  margin: 0 0 5%;
 }
 
 @-webkit-keyframes fadeIn {
@@ -170,7 +170,6 @@ img {
 @media (max-width: 1024px) {
   .text-Top {
     font-size: 68px;
-    margin: 25% 0 10%;
   }
 }
 
@@ -197,6 +196,5 @@ img {
   }
   .text-Top {
     font-size: 52px;
-    margin: 25% 0 10%;
   }
 }

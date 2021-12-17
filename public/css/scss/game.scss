@@ -55,10 +55,9 @@
 
 #giveCharacter {
   width: 100%;
-  height: 100%;
+  height: auto;
   // background: #9993;
 
-  // TODO give-round
   .give-round {
     width: 400px;
     height: 400px;
@@ -80,7 +79,8 @@
     transition: $trans-text;
   }
 
-  .give-charactor {
+  // TODO 給身分的 class
+  .give-character {
     font-size: $fs-title-pc !important;
   }
 
@@ -123,6 +123,28 @@
 
     .model-num {
       font-size: $fs-ms;
+    }
+  }
+
+  #giveCharacter {
+    .give-round {
+      width: 75vw;
+      max-width: 320px;
+      height: 75vw;
+      max-height: 320px;
+      border: 10px solid $black;
+    }
+
+    .give-num {
+      font-size: $fs-number-phone;
+    }
+
+    .give-character {
+      font-size: $fs-title !important;
+    }
+
+    .give-tips {
+      bottom: 18%;
     }
   }
 }

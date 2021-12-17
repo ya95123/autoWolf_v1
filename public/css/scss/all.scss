@@ -125,8 +125,7 @@ img {
   font-size: $fs-title;
   letter-spacing: 2px;
   text-align: center;
-
-  margin: 15% 0 5%;
+  margin: 0 0 5%;
 }
 
 @keyframes fadeIn {
@@ -142,7 +141,6 @@ img {
 @media (max-width:1024px) {
   .text-Top {
     font-size: $fs-title-pc;
-    margin: 25% 0 10%;
   }
 }
 
@@ -173,6 +171,5 @@ img {
 
   .text-Top {
     font-size: $fs-title;
-    margin: 25% 0 10%;
   }
 }
