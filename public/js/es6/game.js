@@ -99,7 +99,8 @@ const give = () => {
       {
         "id": id,
         "character": character,
-        "team": team
+        "team": team,
+        "alive": true
       }
     )
   }
