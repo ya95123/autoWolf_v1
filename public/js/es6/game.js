@@ -1,6 +1,7 @@
 // variables
 const setting = document.getElementById("setting")
 const giveCharacter = document.getElementById("giveCharacter")
+const giveRound = document.querySelector(".give-round")
 const models = document.querySelectorAll(".model")
 const modelData = {
   "cate": [
@@ -38,6 +39,8 @@ let cate = modelData.cate
 let modelPlaying = {} // 所選模式
 let characterList = [] // 身分 & 順序
 let wolfsNum, godsNum, mansNum // 狼，神，民 - 數量
+let giveCharacterOrder = 0 // 發身分順序紀錄
+let giveTipsText // 發身分提示變化換
 
 // functions
 // *區間亂數
@@ -59,6 +62,8 @@ const selectModel = (idx) => {
   modelPlaying = cate[idx] // 玩的模式
   // 給身分
   give()
+  // 發身分 畫面
+  giveHtml()
 
   // 關閉 setting，打開發身分
   setting.classList.add("no-show")
@@ -68,7 +73,7 @@ const selectModel = (idx) => {
   }, 250)
 }
 
-// *給身分
+// *給身分 array
 const give = () => {
   let id, character, randNum, team
   let allNum = modelPlaying.peopleNum - 1
@@ -97,12 +102,63 @@ const give = () => {
         "team": team
       }
     )
-
-    // TODO 創出發身分 html
   }
 
   console.log(modelPlaying.characterAll) // 發完身分會剩 []
   console.log(characterList) // 身分順序
+}
+
+// *發身分 畫面
+const giveHtml = () => {
+  const giveNum = document.querySelector(".give-num")
+  const giveTips = document.querySelector(".give-tips")
+  const give_character = document.querySelector(".give-character")
+  let lastOrder = characterList.length - 1
+
+  // 進入畫面初始
+  giveNum.innerText = characterList[giveCharacterOrder].id
+  giveTips.innerText = "點擊看身分"
+
+  // click giveRound
+  giveRound.addEventListener("click", () => {
+    // *順序 - click 要給身分
+    if (giveRound.getAttribute("data-give") === "toCharacter") {
+      // 顯示身分
+      give_character.innerText = characterList[giveCharacterOrder].character
+      giveCharacterOrder === lastOrder ? giveTips.innerText = "點擊後開始遊戲" : giveTips.innerText = "點擊後傳給下一位"
+
+      // round 旋轉，關閉 num，顯示 character
+      giveRound.classList.add("round-rotate")
+      giveNum.classList.add("none")
+      give_character.classList.remove("none")
+      give_character.classList.add("text-rotate")
+      giveTips.classList.add("tips-rotate")
+
+      // 狀態調為 "charecter"
+      giveRound.setAttribute("data-give", "toNum")
+      return
+    }
+    // TODO 最後一號人物時開使遊戲
+    if (giveCharacterOrder === lastOrder) {
+      console.log("開始遊戲")
+      return
+    }
+    // *身分 - click 給下一位順序
+    giveCharacterOrder++
+    // 顯示順序
+    giveNum.innerText = characterList[giveCharacterOrder].id
+    giveTips.innerText = "點擊看身分"
+
+    // round 旋轉，關閉 num，顯示 character
+    giveRound.classList.remove("round-rotate")
+    giveNum.classList.remove("none")
+    give_character.classList.add("none")
+    give_character.classList.remove("text-rotate")
+    giveTips.classList.remove("tips-rotate")
+
+    // 狀態調為 "charecter"
+    giveRound.setAttribute("data-give", "toCharacter")
+  }, false)
 }
 
 // *click 模式選擇

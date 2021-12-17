@@ -92,18 +92,40 @@
           flex-direction: column;
   position: relative;
   cursor: pointer;
+  -webkit-transition: 0.5s;
+  -o-transition: 0.5s;
+  transition: 0.5s;
 }
 
-#giveCharacter .give-num {
-  font-size: 105px;
+#giveCharacter .round-rotate {
+  -webkit-transform: rotateY(180deg) !important;
+          transform: rotateY(180deg) !important;
+}
+
+#giveCharacter .text-rotate {
+  -webkit-transform: rotateY(180deg) !important;
+          transform: rotateY(180deg) !important;
+}
+
+#giveCharacter .tips-rotate {
+  -webkit-transform: translateX(-50%) rotateY(180deg) !important;
+          transform: translateX(-50%) rotateY(180deg) !important;
+}
+
+#giveCharacter .give-num,
+#giveCharacter .give-character {
   font-weight: 900;
   -webkit-transition: 0.25s;
   -o-transition: 0.25s;
   transition: 0.25s;
 }
 
+#giveCharacter .give-num {
+  font-size: 105px;
+}
+
 #giveCharacter .give-character {
-  font-size: 68px !important;
+  font-size: 68px;
 }
 
 #giveCharacter .give-tips {
@@ -160,7 +182,7 @@
     font-size: 88px;
   }
   #giveCharacter .give-character {
-    font-size: 52px !important;
+    font-size: 52px;
   }
   #giveCharacter .give-tips {
     bottom: 18%;

@@ -71,17 +71,34 @@
     flex-direction: column;
     position: relative;
     cursor: pointer;
+    transition: $trans-normal;
   }
 
-  .give-num {
-    font-size: $fs-number-pc;
+  .round-rotate {
+    transform: rotateY(180deg) !important;
+  }
+
+  .text-rotate {
+    transform: rotateY(180deg) !important;
+  }
+
+  .tips-rotate {
+    transform: translateX(-50%) rotateY(180deg) !important;
+  }
+
+  .give-num,
+  .give-character {
     font-weight: $fw-bolder;
     transition: $trans-text;
   }
 
-  // TODO 給身分的 class
+  .give-num {
+    font-size: $fs-number-pc;
+  }
+
+  // 給身分的 class
   .give-character {
-    font-size: $fs-title-pc !important;
+    font-size: $fs-title-pc;
   }
 
   .give-tips {
@@ -140,7 +157,7 @@
     }
 
     .give-character {
-      font-size: $fs-title !important;
+      font-size: $fs-title;
     }
 
     .give-tips {

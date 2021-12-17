@@ -15,7 +15,7 @@
   <img id="bg" src="img/index/title_bg.svg">
   <div id="app">
     <!-- *設定模式 -->
-    <section id="setting" class="dailog-frame none">
+    <section id="setting" class="dailog-frame">
       <div class="dailog-container">
         <div class="model"></div>
         <div class="model"></div>
@@ -30,12 +30,13 @@
     </section>
 
     <!-- *發身分 -->
-    <section id="giveCharacter" class="">
+    <section id="giveCharacter" class="none">
       <h1 class="text-Top">發身分</h1>
       <!-- TODO RWD & 點擊後的變化 js 控制 & 紀錄 -->
-      <p class="give-round">
-        <span class="give-num">2</span>
-        <span class="give-tips">點擊看身分</span>
+      <p class="give-round" data-give="toCharacter">
+        <span class="give-num"></span>
+        <span class="give-character none"></span>
+        <span class="give-tips"></span>
       </p>
     </section>
   </div>
