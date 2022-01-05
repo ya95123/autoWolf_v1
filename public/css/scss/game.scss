@@ -118,6 +118,36 @@
     color: $white;
     opacity: 0.8;
   }
+
+  #gamming-number {
+    width: 400px;
+    max-width: 90%;
+    height: auto;
+    margin: 6% auto 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .number {
+    width: 70px;
+    height: 70px;
+    margin: 0 20px 30px;
+    font-size: $fs-xxl;
+    font-weight: $fw-bold;
+    background: $white;
+    // border: 3px solid $black;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: $trans-text;
+
+    &:hover {
+      background: $gold;
+    }
+  }
 }
 
 @keyframes bgShine {

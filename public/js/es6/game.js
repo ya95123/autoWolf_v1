@@ -3,6 +3,9 @@ const setting = document.getElementById("setting")
 const giveCharacter = document.getElementById("giveCharacter")
 const gamming = document.getElementById("gamming")
 const giveRound = document.querySelector(".give-round")
+const nightTop = document.getElementById("night-top")
+const nightTips = document.getElementById("night-tips")
+const gammingNumber = document.getElementById("gamming-number")
 const models = document.querySelectorAll(".model")
 const modelData = {
   "cate": [
@@ -14,7 +17,7 @@ const modelData = {
       "mansNum": "",
       "chracterText": "",
       "characterAll": [],
-      "processNight": ["天黑"]
+      "processNight": ["天黑",]
     },
     {
       "model": "一般局",
@@ -87,7 +90,7 @@ const give = () => {
   godsNum = modelPlaying.godsNum
   mansNum = modelPlaying.mansNum
 
-  // 設定玩家初始值
+  // 設定初始直
   for (let i = 0; i < modelPlaying.peopleNum; i++) {
     id = i + 1
     randNum = rand(0, allNum)
@@ -99,6 +102,7 @@ const give = () => {
     // 團隊
     character.includes("狼") ? team = "wolfs" : character.includes("民") ? team = "mans" : team = "gods"
 
+    // 設定玩家初始值 json
     characterList.push(
       {
         "id": id,
@@ -107,6 +111,9 @@ const give = () => {
         "alive": true
       }
     )
+
+    // 製造成員 number
+    gammingNumber.insertAdjacentHTML("beforeend", `<div class="number">${id}</div>`)
   }
 
   console.log(modelPlaying.characterAll) // 發完身分會剩 []
@@ -174,18 +181,43 @@ const giveHtml = () => {
   }, false)
 }
 
-// TODO 遊戲 - 天黑
+// TODO 遊戲 - 天黑流程
 const night = () => {
-  const nightTop = document.getElementById("night-top")
-  const nightTips = document.getElementById("night-tips")
+  const numbers = document.querySelectorAll(".number")
+  let order = 0
 
-  console.log("night")
-  // 天黑
+  // *天黑
+  console.log("天黑")
   document.body.classList.add("night")
   nightTop.innerText = "天黑請閉眼"
   nightTips.innerText = "點擊畫面下一步"
 
-  // TODO 根據 processNight 跑流程
+  // *click螢幕
+  window.addEventListener("click", (e) => {
+    e.preventDefault()
+    console.log("click")
+    console.log(modelPlaying.processNight[order]);
+
+    if (modelPlaying.processNight[order] === "天黑") {
+      order++
+      return
+    }
+
+    if (modelPlaying.processNight[order] === "預") {
+      console.log("預")
+      nightTop.innerText = "預言家請睜眼"
+      nightTips.innerText = "請選擇你要查驗的對象"
+      return
+    }
+  })
+
+  // TODO click number
+  // TODO click 毒/不毒
+  // TODO 天亮要關掉這些 click 事件
+}
+
+const processNightList = () => {
+
 }
 
 // *模式畫面 & click 模式選擇

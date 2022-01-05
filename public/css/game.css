@@ -146,6 +146,47 @@
   opacity: 0.8;
 }
 
+#gamming #gamming-number {
+  width: 400px;
+  max-width: 90%;
+  height: auto;
+  margin: 6% auto 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+#gamming .number {
+  width: 70px;
+  height: 70px;
+  margin: 0 20px 30px;
+  font-size: 32px;
+  font-weight: 500;
+  background: #fff;
+  border-radius: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  cursor: pointer;
+  -webkit-transition: 0.25s;
+  -o-transition: 0.25s;
+  transition: 0.25s;
+}
+
+#gamming .number:hover {
+  background: #A37C27;
+}
+
 @-webkit-keyframes bgShine {
   0% {
     opacity: 0.5;
