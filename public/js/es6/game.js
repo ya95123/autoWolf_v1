@@ -288,7 +288,7 @@ const night = () => {
     }, false)
   })
 
-  // TODO 天亮要關掉這些 window click 事件
+  // TODO 天亮要關掉這些 window click 事件、dead 掉已死對象
 }
 
 const processNightList = () => {
