@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="css/game.css">
 </head>
 
-<body>
+<body class="nightd">
   <img id="bg" src="img/index/title_bg.svg">
   <div id="app">
     <!-- *設定模式 -->
@@ -44,14 +44,14 @@
     <section id="gamming" class="none">
       <!-- 天黑 -->
       <div id="gamming-night">
-        <h1 id="night-top" class="text-Top">預言家請睜眼</h1>
-        <p id="night-tips" class="gamming-tips">請選擇你要查驗的對象</p>
+        <h1 id="night-top" class="text-Top">女巫請睜眼</h1>
+        <p id="night-tips" class="gamming-tips">x 號被殺了，請問你要救他嗎？</p>
       </div>
       <!-- 天亮 -->
       <div id="gamming-morning" class="none"></div>
       <!-- 成員 -->
       <div id="gamming-number" class="none">
-        <!-- <div class="number">1</div>
+        <!-- <div class="number dead">1</div>
         <div class="number">2</div>
         <div class="number">3</div>
         <div class="number">4</div>
@@ -61,6 +61,11 @@
         <div class="number">8</div>
         <div class="number">9</div>
         <div class="number">10</div> -->
+      </div>
+      <!-- 二選一時 -->
+      <div id="gamming-choose" class="none">
+        <div class="choose"></div>
+        <div class="choose"></div>
       </div>
     </section>
   </div>
