@@ -148,9 +148,9 @@
 
 #gamming #gamming-number {
   width: 400px;
-  max-width: 90%;
+  max-width: 80%;
   height: auto;
-  margin: 6% auto 0;
+  margin: 7% auto 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -185,6 +185,12 @@
 
 #gamming .number:hover {
   background: #A37C27;
+  color: #fff;
+}
+
+#gamming .dead {
+  opacity: 0.1 !important;
+  pointer-events: none !important;
 }
 
 @-webkit-keyframes bgShine {
@@ -208,6 +214,10 @@
 @media (max-width: 1024px) {
   #gamming .gamming-tips {
     font-size: 23px;
+  }
+  #gamming .number:hover {
+    background: #fff;
+    color: #282726;
   }
 }
 
@@ -243,5 +253,11 @@
   }
   #gamming .gamming-tips {
     font-size: 16px;
+  }
+  #gamming .number {
+    width: 50px;
+    height: 50px;
+    margin: 0 22px 30px;
+    font-size: 23px;
   }
 }

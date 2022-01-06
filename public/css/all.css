@@ -63,9 +63,12 @@ img {
   color: #6A8A82 !important;
 }
 
+.text-gold {
+  color: #A37C27 !important;
+}
+
 .night {
   background: #282726 !important;
-  cursor: pointer;
 }
 
 #app {
@@ -85,6 +88,7 @@ img {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  overflow: hidden;
   position: relative;
 }
 
