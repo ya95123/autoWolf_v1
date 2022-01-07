@@ -1,4 +1,5 @@
 // variables
+const body = document.body
 const setting = document.getElementById("setting")
 const giveCharacter = document.getElementById("giveCharacter")
 const gamming = document.getElementById("gamming")
@@ -50,7 +51,7 @@ let characterList = [] // 身分 & 順序
 let wolfsNum, godsNum, mansNum // 狼，神，民 - 數量
 let giveCharacterOrder = 0 // 發身分順序紀錄
 let giveTipsText // 發身分提示變化換
-let witchSkills = { "antidote": true, "posion": false } // 女巫的技能設定
+let witchSkills = { "antidote": false, "posion": true } // 女巫的技能設定
 
 // functions
 // *區間亂數
@@ -159,9 +160,6 @@ const giveHtml = () => {
     // *最後一號人物時開使遊戲
     if (giveCharacterOrder === lastOrder) {
       night()
-      // 關閉 giveCharacter，打開 gamming
-      giveCharacter.classList.add("none")
-      gamming.classList.remove("none")
       return
     }
     // *身分 - click 給下一位順序
@@ -190,13 +188,15 @@ const night = () => {
   let order = 0
   let killed
 
-  // *天黑
-  document.body.classList.add("night")
+  // *天黑，關閉 giveCharacter，打開 gamming
+  body.classList.add("night")
+  giveCharacter.classList.add("none")
+  gamming.classList.remove("none")
   nightTop.innerText = "天黑請閉眼"
   nightTips.innerText = "點擊畫面下一步"
 
-  // *click螢幕
-  window.addEventListener("click", (e) => {
+  // TODO　click螢幕 / body / app
+  body.addEventListener("click", (e) => {
     e.preventDefault()
     console.log(modelPlaying.processNight[order])
 
@@ -226,17 +226,24 @@ const night = () => {
 
       // *無解藥，無毒藥
       if (witchSkills.antidote === false && witchSkills.posion === false) {
-        nightTips.innerText = "你已使用完兩瓶毒藥\n女巫請閉眼😌"
+        nightTips.innerText = "你已使用完兩瓶藥\n女巫請閉眼😌"
         return
       }
 
       // *有解藥、無解藥，有毒藥
       // 打開選擇
       gammingChoose.classList.remove("none")
-      // 判斷是否有解藥
-      witchSkills.antidote === true ? nightTips.innerText = `${killed + 1} 號被殺了，請問你要救他嗎？` : nightTips.innerText = "請問你要使用毒藥嗎？"
-      chooses[0].innerText = "要"
-      chooses[1].innerText = "不要"
+      // 有解藥
+      if (witchSkills.antidote === true) {
+        nightTips.innerText = `${killed + 1} 號被殺了，請問你要救他嗎？`
+        chooses[0].innerText = "救"
+        chooses[1].innerText = "不救"
+        return
+      }
+      // 無解藥，有毒藥
+      nightTips.innerText = "請問你要使用毒藥嗎？"
+      chooses[0].innerText = "毒"
+      chooses[1].innerText = "不毒"
       return
     }
 
@@ -245,7 +252,7 @@ const night = () => {
       nightTop.classList.remove("text-gold")
       gammingChoose.classList.add("none")
 
-      nightTop.innerText = "天亮了，今晚是平安夜🌕"
+      nightTop.innerText = "天亮了，今晚是平安夜🌙"
       nightTips.innerText = "點擊畫面下一步"
       return
     }
@@ -266,10 +273,12 @@ const night = () => {
       // *狼殺
       if (modelPlaying.processNight[order] === "狼") {
         killed = idx
-        alert(`(狼人殺了 ${killed + 1} 號🩸)\n狼人請閉眼😌`)
+        alert(`狼人請閉眼😌\n(狼人殺了 ${killed + 1} 號🩸)`)
         order++
         return
       }
+
+      // TODO 巫毒
     }, false)
   })
 
@@ -279,26 +288,47 @@ const night = () => {
       // TODO 女巫選擇
       if (modelPlaying.processNight[order] === "巫") {
         console.log(item.innerText)
-        // *有解藥
-        if (witchSkills.antidote === true) {
-          // *救
-          if (item.innerText === "要") {
-            // 有毒藥
-            if (witchSkills.posion === true) {
-              alert(`(女巫救了 ${killed + 1} 號🔮)\n你要使用毒藥嗎？(今晚不能用了)\n女巫請閉眼😌`)
-              witchSkills.posion = false
-            } else {
-              // 無毒藥
-              alert(`(女巫救了 ${killed + 1} 號🔮)\n(女巫已無毒藥)\n女巫請閉眼😌`)
-            }
-            order++
+        // *救
+        if (item.innerText === "救") {
+          // 有毒藥
+          if (witchSkills.posion === true) {
+            alert(`你要使用毒藥嗎？(今晚不能用了)\n女巫請閉眼😌\n(女巫救了 ${killed + 1} 號🔮)`)
+            witchSkills.antidote = false
+          } else {
+            // 無毒藥
+            alert(`女巫請閉眼😌\n(女巫救了 ${killed + 1} 號🔮)\n(女巫已無毒藥)`)
+          }
+          order++
+          return
+        }
+        // *不救
+        if (item.innerText === "不救") {
+          console.log(123);
+          // 有毒藥
+          if (witchSkills.posion === true) {
+            nightTips.innerText = "請問你要使用毒藥嗎？"
+            chooses[0].innerText = "毒"
+            chooses[1].innerText = "不毒"
+            console.log(456);
             return
           }
-          // TODO 不救
-          // 有毒藥，無毒藥
+          // 無毒藥
+          alert(`女巫請閉眼😌\n(女巫已無毒藥)`)
+          order++
+          return
         }
-
-        // *無解藥
+        // *毒
+        if (item.innerText === "毒") {
+          console.log(789);
+          // 關閉選項，讓成員出來
+          // TODO window 那邊的點擊出錯、window 點擊事件要改成別的、設定寫死直接跳女巫
+          gammingChoose.classList.add("none")
+          gammingNumber.classList.remove("none")
+          return
+        }
+        // *不毒
+        alert(`女巫請閉眼😌`)
+        order++
         return
       }
     }, false)
