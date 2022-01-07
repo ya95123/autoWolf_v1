@@ -50,7 +50,7 @@ let characterList = [] // 身分 & 順序
 let wolfsNum, godsNum, mansNum // 狼，神，民 - 數量
 let giveCharacterOrder = 0 // 發身分順序紀錄
 let giveTipsText // 發身分提示變化換
-let witchSkills = { "posion": true, "antidote": true } // 女巫的技能設定
+let witchSkills = { "antidote": true, "posion": false } // 女巫的技能設定
 
 // functions
 // *區間亂數
@@ -191,7 +191,6 @@ const night = () => {
   let killed
 
   // *天黑
-  console.log("天黑")
   document.body.classList.add("night")
   nightTop.innerText = "天黑請閉眼"
   nightTips.innerText = "點擊畫面下一步"
@@ -199,8 +198,7 @@ const night = () => {
   // *click螢幕
   window.addEventListener("click", (e) => {
     e.preventDefault()
-    console.log("click")
-    console.log(modelPlaying.processNight[order]);
+    console.log(modelPlaying.processNight[order])
 
     if (modelPlaying.processNight[order] === "天黑") {
       order++
@@ -241,6 +239,16 @@ const night = () => {
       chooses[1].innerText = "不要"
       return
     }
+
+    if (modelPlaying.processNight[order] === "天亮") {
+      document.body.classList.remove("night")
+      nightTop.classList.remove("text-gold")
+      gammingChoose.classList.add("none")
+
+      nightTop.innerText = "天亮了，今晚是平安夜🌕"
+      nightTips.innerText = "點擊畫面下一步"
+      return
+    }
   })
 
   // TODO click number
@@ -258,7 +266,7 @@ const night = () => {
       // *狼殺
       if (modelPlaying.processNight[order] === "狼") {
         killed = idx
-        alert(`狼人殺了 ${killed + 1} 號🩸\n狼人請閉眼😌`)
+        alert(`(狼人殺了 ${killed + 1} 號🩸)\n狼人請閉眼😌`)
         order++
         return
       }
@@ -270,12 +278,20 @@ const night = () => {
     item.addEventListener("click", () => {
       // TODO 女巫選擇
       if (modelPlaying.processNight[order] === "巫") {
+        console.log(item.innerText)
         // *有解藥
         if (witchSkills.antidote === true) {
           // *救
-          if (item.innerText = "要") {
-            // 有毒藥 -> 喊聲，無毒藥 -> 進下一個
-            witchSkills.posion === true ? alert(`你要使用毒藥嗎？(今晚不能用了)\n女巫請閉眼😌`) : order++
+          if (item.innerText === "要") {
+            // 有毒藥
+            if (witchSkills.posion === true) {
+              alert(`(女巫救了 ${killed + 1} 號🔮)\n你要使用毒藥嗎？(今晚不能用了)\n女巫請閉眼😌`)
+              witchSkills.posion = false
+            } else {
+              // 無毒藥
+              alert(`(女巫救了 ${killed + 1} 號🔮)\n(女巫已無毒藥)\n女巫請閉眼😌`)
+            }
+            order++
             return
           }
           // TODO 不救
