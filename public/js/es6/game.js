@@ -1,5 +1,6 @@
 // variables
 const body = document.body
+const app = document.getElementById("app")
 const setting = document.getElementById("setting")
 const giveCharacter = document.getElementById("giveCharacter")
 const gamming = document.getElementById("gamming")
@@ -51,7 +52,7 @@ let characterList = [] // 身分 & 順序
 let wolfsNum, godsNum, mansNum // 狼，神，民 - 數量
 let giveCharacterOrder = 0 // 發身分順序紀錄
 let giveTipsText // 發身分提示變化換
-let witchSkills = { "antidote": false, "posion": true } // 女巫的技能設定
+let witchSkills = { "antidote": false, "posion": true, "start": false } // 女巫的技能設定
 
 // functions
 // *區間亂數
@@ -196,7 +197,7 @@ const night = () => {
   nightTips.innerText = "點擊畫面下一步"
 
   // TODO　click螢幕 / body / app
-  body.addEventListener("click", (e) => {
+  app.addEventListener("click", (e) => {
     e.preventDefault()
     console.log(modelPlaying.processNight[order])
 
@@ -215,13 +216,19 @@ const night = () => {
 
     if (modelPlaying.processNight[order] === "狼") {
       nightTop.innerText = "狼人請睜眼"
-      nightTips.innerText = "請確認彼此身分，並比出要殺的對象"
+      nightTips.innerText = "請確認彼此身分，比出要殺的對象"
       return
     }
 
     if (modelPlaying.processNight[order] === "巫") {
+      console.log(witchSkills)
+      // *功能已展開時，就不再往下跑了，避免跟後續動作衝突(Dom)
+      if (witchSkills.start) return
+      witchSkills.start = true
+
       // 關閉成員
       gammingNumber.classList.add("none")
+      isClick = true
       nightTop.innerText = "女巫請睜眼"
 
       // *無解藥，無毒藥
@@ -248,7 +255,7 @@ const night = () => {
     }
 
     if (modelPlaying.processNight[order] === "天亮") {
-      document.body.classList.remove("night")
+      body.classList.remove("night")
       nightTop.classList.remove("text-gold")
       gammingChoose.classList.add("none")
 
@@ -256,7 +263,7 @@ const night = () => {
       nightTips.innerText = "點擊畫面下一步"
       return
     }
-  })
+  }, false)
 
   // TODO click number
   numbers.forEach((item, idx) => {
@@ -284,7 +291,10 @@ const night = () => {
 
   // TODO click choose
   chooses.forEach(item => {
-    item.addEventListener("click", () => {
+    item.addEventListener("click", (e) => {
+      // 防止點擊穿透
+      e.stopPropagation()
+
       // TODO 女巫選擇
       if (modelPlaying.processNight[order] === "巫") {
         console.log(item.innerText)
@@ -303,7 +313,6 @@ const night = () => {
         }
         // *不救
         if (item.innerText === "不救") {
-          console.log(123);
           // 有毒藥
           if (witchSkills.posion === true) {
             nightTips.innerText = "請問你要使用毒藥嗎？"
@@ -319,11 +328,10 @@ const night = () => {
         }
         // *毒
         if (item.innerText === "毒") {
-          console.log(789);
           // 關閉選項，讓成員出來
-          // TODO window 那邊的點擊出錯、window 點擊事件要改成別的、設定寫死直接跳女巫
           gammingChoose.classList.add("none")
           gammingNumber.classList.remove("none")
+          nightTips.innerText = "請比出要毒的對象"
           return
         }
         // *不毒
@@ -335,10 +343,6 @@ const night = () => {
   })
 
   // TODO 天亮要關掉這些 window click 事件、dead 掉已死對象
-}
-
-const processNightList = () => {
-
 }
 
 // *模式畫面 & click 模式選擇
@@ -357,4 +361,6 @@ models.forEach((item, idx) => {
     selectModel(idx)
   }, false)
 })
+
+// TODO 1.調整 #app 格式讓所有畫面被 app 占據(如果可以的話) OK 2.紀錄狼殺、毒殺 3.天亮動作
 
