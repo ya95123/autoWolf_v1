@@ -73,7 +73,6 @@ img {
 
 #app {
   width: 100%;
-  max-width: 1024px;
   height: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -180,9 +179,6 @@ img {
 }
 
 @media (max-width: 767px) {
-  #app {
-    max-height: 568px;
-  }
   .dailog-frame {
     width: 90vw;
     max-height: 95vh;

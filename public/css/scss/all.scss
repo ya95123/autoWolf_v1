@@ -62,7 +62,7 @@ img {
 
 #app {
   width: 100%;
-  max-width: 1024px;
+  // max-width: 1024px;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -153,7 +153,7 @@ img {
 @media (max-width:767px) {
   #app {
     // max-width: 320px;
-    max-height: 568px;
+    // max-height: 568px;
   }
 
   .dailog-frame {
