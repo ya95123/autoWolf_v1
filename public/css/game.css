@@ -134,6 +134,11 @@
   white-space: nowrap;
 }
 
+#gamming {
+  width: 420px;
+  max-width: 100%;
+}
+
 #gamming .text-Top,
 #gamming .gamming-tips {
   cursor: default;
