@@ -97,8 +97,8 @@
 }
 
 #giveCharacter .text-rotate {
-  -webkit-transform: rotateY(180deg) !important;
-          transform: rotateY(180deg) !important;
+  -webkit-transform: rotateY(180deg) translateY(-5px) !important;
+          transform: rotateY(180deg) translateY(-5px) !important;
 }
 
 #giveCharacter .tips-rotate {
@@ -109,6 +109,9 @@
 #giveCharacter .give-num,
 #giveCharacter .give-character {
   font-weight: 900;
+  -webkit-transform: translateY(-5px);
+      -ms-transform: translateY(-5px);
+          transform: translateY(-5px);
   -webkit-transition: 0.25s;
   -o-transition: 0.25s;
   transition: 0.25s;

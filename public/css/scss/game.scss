@@ -76,7 +76,7 @@
   }
 
   .text-rotate {
-    transform: rotateY(180deg) !important;
+    transform: rotateY(180deg) translateY(-5px) !important;
   }
 
   .tips-rotate {
@@ -86,6 +86,7 @@
   .give-num,
   .give-character {
     font-weight: $fw-bolder;
+    transform: translateY(-5px);
     transition: $trans-text;
   }
 
