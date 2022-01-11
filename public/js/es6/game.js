@@ -412,5 +412,5 @@ models.forEach((item, idx) => {
   }, false)
 })
 
-// TODO 2.紀錄狼殺、毒殺 OK 3.天亮動作
+// TODO 1.天亮動作並檢查是否需要跟天黑合併，調整 js function 分類 play / night / morning 2.發言順序 & 發言計時 & 下一位 3.投票環節 & 是否有遺言 & 死前是否有技能 4.不斷計分，有隊伍歸零，遊戲結束 5.結束畫面
 
