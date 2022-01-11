@@ -52,7 +52,7 @@ let characterList = [] // 身分 & 順序
 let wolfsNum, godsNum, mansNum // 狼，神，民 - 數量
 let giveCharacterOrder = 0 // 發身分順序紀錄
 let giveTipsText // 發身分提示變化換
-let witchSkills = { "antidote": false, "posion": true, "start": false } // 女巫的技能設定
+let witchSkills = { "antidote": true, "posion": true, "start": false } // 女巫的技能設定
 
 // functions
 // *區間亂數
@@ -187,16 +187,19 @@ const giveHtml = () => {
 const night = () => {
   const numbers = document.querySelectorAll(".number")
   let order = 0
-  let killed
+  let killed = []
 
   // *天黑，關閉 giveCharacter，打開 gamming
   body.classList.add("night")
   giveCharacter.classList.add("none")
+  gammingNumber.classList.add("none")
+  gammingChoose.classList.add("none")
+  nightTop.classList.remove("text-gold")
   gamming.classList.remove("none")
   nightTop.innerText = "天黑請閉眼"
   nightTips.innerText = "點擊畫面下一步"
 
-  // TODO　click螢幕 / body / app
+  // TODO　click app - 判定流程階段
   app.addEventListener("click", (e) => {
     e.preventDefault()
     console.log(modelPlaying.processNight[order])
@@ -242,7 +245,7 @@ const night = () => {
       gammingChoose.classList.remove("none")
       // 有解藥
       if (witchSkills.antidote === true) {
-        nightTips.innerText = `${killed + 1} 號被殺了，請問你要救他嗎？`
+        nightTips.innerText = `${killed.wolfs} 號被殺了，請問你要救他嗎？`
         chooses[0].innerText = "救"
         chooses[1].innerText = "不救"
         return
@@ -255,10 +258,13 @@ const night = () => {
     }
 
     if (modelPlaying.processNight[order] === "天亮") {
+      console.log(killed)
       body.classList.remove("night")
       nightTop.classList.remove("text-gold")
+      gammingNumber.classList.add("none")
       gammingChoose.classList.add("none")
 
+      // TODO 死、平安 (0死、1死、2死、同刀同毒)
       nightTop.innerText = "天亮了，今晚是平安夜🌙"
       nightTips.innerText = "點擊畫面下一步"
       return
@@ -279,22 +285,25 @@ const night = () => {
 
       // *狼殺
       if (modelPlaying.processNight[order] === "狼") {
-        killed = idx
-        alert(`狼人請閉眼😌\n(狼人殺了 ${killed + 1} 號🩸)`)
+        killed.wolfs = idx + 1
+        alert(`狼人請閉眼😌\n(狼人殺了 ${killed.wolfs} 號🩸)`)
         order++
         return
       }
 
-      // TODO 巫毒
+      // *巫毒
+      if (modelPlaying.processNight[order] === "巫") {
+        killed.witch = idx + 1
+        alert(`女巫請閉眼😌\n(女巫毒了 ${killed.witch} 號💀)`)
+        order++
+        return
+      }
     }, false)
   })
 
   // TODO click choose
   chooses.forEach(item => {
     item.addEventListener("click", (e) => {
-      // 防止點擊穿透
-      e.stopPropagation()
-
       // TODO 女巫選擇
       if (modelPlaying.processNight[order] === "巫") {
         console.log(item.innerText)
@@ -302,11 +311,12 @@ const night = () => {
         if (item.innerText === "救") {
           // 有毒藥
           if (witchSkills.posion === true) {
-            alert(`你要使用毒藥嗎？(今晚不能用了)\n女巫請閉眼😌\n(女巫救了 ${killed + 1} 號🔮)`)
+            alert(`你要使用毒藥嗎？(今晚不能用了)\n女巫請閉眼😌\n(女巫救了 ${killed.wolfs} 號🔮)`)
             witchSkills.antidote = false
+            killed.wolfs = 0
           } else {
             // 無毒藥
-            alert(`女巫請閉眼😌\n(女巫救了 ${killed + 1} 號🔮)\n(女巫已無毒藥)`)
+            alert(`女巫請閉眼😌\n(女巫救了 ${killed.wolfs} 號🔮)\n(女巫已無毒藥)`)
           }
           order++
           return
@@ -328,6 +338,8 @@ const night = () => {
         }
         // *毒
         if (item.innerText === "毒") {
+          // 防止點擊穿透
+          e.stopPropagation()
           // 關閉選項，讓成員出來
           gammingChoose.classList.add("none")
           gammingNumber.classList.remove("none")
@@ -362,5 +374,5 @@ models.forEach((item, idx) => {
   }, false)
 })
 
-// TODO 1.調整 #app 格式讓所有畫面被 app 占據(如果可以的話) OK 2.紀錄狼殺、毒殺 3.天亮動作
+// TODO 2.紀錄狼殺、毒殺 3.天亮動作
 
