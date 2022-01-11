@@ -289,7 +289,7 @@ const night = () => {
 
         // 死掉的人不能再被點擊、紀錄狼、神、人 存活人數
         killed.forEach((item, idx) => {
-          numbers[idx].classList.add("dead")
+          numbers[item - 1].classList.add("dead")
           console.log(item)
           characterList[item - 1].team === "wolfs" ? modelPlaying.wolfsNum-- : characterList[item - 1].team === "gods" ? modelPlaying.godsNum-- : modelPlaying.mansNum--
         })
