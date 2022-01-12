@@ -15,7 +15,7 @@
   <img id="bg" src="img/index/title_bg.svg">
   <div id="app">
     <!-- *設定模式 -->
-    <section id="setting" class="dailog-frame noned">
+    <section id="setting" class="dailog-frame none">
       <div class="dailog-container">
         <!-- 有幾個模式要先設好幾個 model -->
         <div class="model"></div>
@@ -32,7 +32,7 @@
 
     <!-- *發身分 -->
     <section id="giveCharacter" class="none">
-      <h1 class="text-Top">發身分</h1>
+      <h1 class="text-top">發身分</h1>
       <p class="give-round" data-give="">
         <span class="give-num"></span>
         <span class="give-character none"></span>
@@ -41,14 +41,10 @@
     </section>
 
     <!-- TODO 遊戲流程 -->
-    <section id="gamming" class="none">
+    <section id="gamming" class="noned">
       <!-- 天黑 -->
-      <div id="gamming-night">
-        <h1 id="night-top" class="text-Top">女巫請睜眼</h1>
-        <p id="night-tips" class="gamming-tips">x 號被殺了，請問你要救他嗎？</p>
-      </div>
-      <!-- TODO 天亮 -->
-      <div id="gamming-morning" class="none"></div>
+      <h1 id="text-top" class="text-top">1號發言</h1>
+      <p id="gamming-tips"></p>
       <!-- 成員 -->
       <div id="gamming-number" class="none">
         <!-- <div class="number dead">1</div>
@@ -67,6 +63,10 @@
         <div class="choose"></div>
         <div class="choose"></div>
       </div>
+      <!-- 白天角色功技能 -->
+      <a id="gamming-function" class="none"></a>
+      <!-- 下一位 -->
+      <a id="gamming-next" class="none"></a>
     </section>
   </div>
 

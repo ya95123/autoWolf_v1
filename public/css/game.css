@@ -142,12 +142,12 @@
   max-width: 100%;
 }
 
-#gamming .text-Top,
-#gamming .gamming-tips {
+#gamming .text-top,
+#gamming #gamming-tips {
   cursor: default;
 }
 
-#gamming .gamming-tips {
+#gamming #gamming-tips {
   font-size: 18px;
   text-align: center;
   color: #fff;
@@ -229,6 +229,32 @@
   color: #fff;
 }
 
+#gamming #gamming-function,
+#gamming #gamming-next {
+  display: block;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  padding: 2px 12px 4px;
+  margin: 5% auto;
+  border: 3px solid #282726;
+  border-radius: 13px;
+  font-size: 23px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: #fff;
+  background: #fff;
+  cursor: pointer;
+}
+
+#gamming #gamming-function {
+  background: #A37C27;
+}
+
+#gamming #gamming-next {
+  background: #6A8A82;
+}
+
 @-webkit-keyframes bgShine {
   0% {
     opacity: 0.5;
@@ -248,7 +274,7 @@
 }
 
 @media (max-width: 1024px) {
-  #gamming .gamming-tips {
+  #gamming #gamming-tips {
     font-size: 23px;
   }
   #gamming .number:hover,
@@ -288,7 +314,7 @@
   #giveCharacter .give-tips {
     bottom: 18%;
   }
-  #gamming .gamming-tips {
+  #gamming #gamming-tips {
     font-size: 16px;
   }
   #gamming #gamming-number {

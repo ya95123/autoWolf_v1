@@ -152,7 +152,7 @@ img {
   opacity: 0.75;
 }
 
-.text-Top {
+.text-top {
   color: #fff;
   font-size: 68px;
   letter-spacing: 2px;
@@ -195,7 +195,7 @@ img {
     right: 3px;
     top: 3px;
   }
-  .text-Top {
+  .text-top {
     font-size: 44px;
   }
 }

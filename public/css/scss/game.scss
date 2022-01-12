@@ -115,12 +115,12 @@
   width: 420px;
   max-width: 100%;
 
-  .text-Top,
-  .gamming-tips {
+  .text-top,
+  #gamming-tips {
     cursor: default;
   }
 
-  .gamming-tips {
+  #gamming-tips {
     font-size: $fs-ml;
     text-align: center;
     color: $white;
@@ -184,6 +184,30 @@
       color: $white;
     }
   }
+
+  #gamming-function,
+  #gamming-next {
+    display: block;
+    width: fit-content;
+    padding: 2px 12px 4px;
+    margin: 5% auto;
+    border: 3px solid $black;
+    border-radius: $radius-m;
+    font-size: $fs-xl;
+    font-weight: $fw-bold;
+    letter-spacing: 2px;
+    color: $white;
+    background: $white;
+    cursor: pointer;
+  }
+
+  #gamming-function {
+    background: $gold;
+  }
+
+  #gamming-next {
+    background: $green;
+  }
 }
 
 @keyframes bgShine {
@@ -198,7 +222,7 @@
 
 @media (max-width:1024px) {
   #gamming {
-    .gamming-tips {
+    #gamming-tips {
       font-size: $fs-xl;
     }
 
@@ -254,7 +278,7 @@
   }
 
   #gamming {
-    .gamming-tips {
+    #gamming-tips {
       font-size: $fs-m;
     }
 
