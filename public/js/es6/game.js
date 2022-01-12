@@ -191,7 +191,7 @@ const giveHtml = () => {
   }, false)
 }
 
-// TODO 遊戲 - 天黑
+// *遊戲 - 天黑
 const night = () => {
   // 天黑，關閉 giveCharacter，打開 gamming、格式歸零
   body.classList.add("night")
@@ -212,7 +212,7 @@ const night = () => {
   numbersChoosesClick()
 }
 
-// *夜晚流程
+// TODO 夜晚流程
 const nightFlow = (e) => {
   e.preventDefault()
   console.log(modelPlaying.processNight[order])
@@ -257,7 +257,8 @@ const nightFlow = (e) => {
     gammingChoose.classList.remove("none")
     // 有解藥
     if (witchSkills.antidote === true) {
-      gammingTips.innerText = `${killed[0]} 號被殺了，請問你要救他嗎？`
+      // 是否刀到女巫 -> 是(不能自救)
+      characterList[killed[0] - 1].character === "女巫" ? gammingTips.innerText = `${killed[0]} 號被殺了，請問你要救他嗎？\n(女巫不能自救)` : gammingTips.innerText = `${killed[0]} 號被殺了，請問你要救他嗎？`
       chooses[0].innerText = "救"
       chooses[1].innerText = "不救"
       return
@@ -357,11 +358,16 @@ const numbersChoosesClick = () => {
   // TODO click choose
   chooses.forEach(item => {
     item.addEventListener("click", (e) => {
-      // TODO 女巫選擇
+      // ＊女巫選擇
       if (modelPlaying.processNight[order] === "巫") {
         console.log(item.innerText)
         // *救
         if (item.innerText === "救") {
+          // 女巫自己被毒不能自救
+          if (characterList[killed[0] - 1].character === "女巫") {
+            alert("女巫不能自救🚫\n請點選「不救」")
+            return
+          }
           // 有毒藥
           if (witchSkills.posion === true) {
             alert(`你要使用毒藥嗎？(今晚不能用了)\n女巫請閉眼😌\n(女巫救了 ${killed[0]} 號🔮)`)
@@ -425,5 +431,5 @@ models.forEach((item, idx) => {
   }, false)
 })
 
-// TODO 1.女巫不能自救 2.發言順序 & 發言計時 & 下一位 3.投票環節 & 是否有遺言 & 死前是否有技能 4.不斷計分，有隊伍歸零，遊戲結束 5.結束畫面
+// TODO 1.女巫不能自救OK 2.發言順序 & 發言計時 & 下一位 3.投票環節 & 是否有遺言 & 死前是否有技能 4.不斷計分，有隊伍歸零，遊戲結束 5.結束畫面
 
