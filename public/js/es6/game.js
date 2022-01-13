@@ -9,6 +9,8 @@ const textTop = document.getElementById("text-top")
 const gammingTips = document.getElementById("gamming-tips")
 const gammingNumber = document.getElementById("gamming-number")
 const gammingChoose = document.getElementById("gamming-choose")
+const gammingFunction = document.getElementById("gamming-function")
+const gammingNext = document.getElementById("gamming-next")
 const chooses = document.querySelectorAll(".choose")
 const models = document.querySelectorAll(".model")
 const modelData = {
@@ -56,6 +58,7 @@ let numbers // 成員號碼 div
 let order = 0 // 流程順序
 let killed = [] // 夜晚被殺 [0]狼殺 [1]毒殺
 let witchSkills = { "antidote": true, "posion": true, "start": false } // 女巫的技能設定
+let startNum // 開始發言號碼
 
 // functions
 // *區間亂數
@@ -212,7 +215,7 @@ const night = () => {
   numbersChoosesClick()
 }
 
-// TODO 夜晚流程
+// *夜晚流程
 const nightFlow = (e) => {
   e.preventDefault()
   console.log(modelPlaying.processNight[order])
@@ -318,9 +321,41 @@ const nightFlow = (e) => {
 
 // TODO 遊戲 - 天亮流程
 const morning = () => {
-  console.log("天亮測試")
+  console.log("天亮發言開始")
   // 關閉天黑流程的 app 監聽
   app.removeEventListener("click", nightFlow, false)
+  // 打開 next btn
+  gammingNext.classList.remove("none")
+  gammingNext.innerText = "下一位"
+
+  // *天亮後第一位發言
+  // 沒有人死->隨機開始發言，有人死->第一個死後發言
+  killed.length === 0 ? startNum = rand(0, characterList.length - 1) + 1 : startNum = killed[0] + 1
+  // 超過最大的號碼，要回到初始號碼 1
+  if (startNum > characterList.length) startNum -= characterList.length
+  textTop.innerText = `${startNum} 號開始發言`
+  gammingTips.innerText = `(${characterList[startNum - 1].character})`
+
+  // 判斷是否有功能
+  morningFunction()
+  // click function / next
+  functionNextClick()
+}
+
+// TODO 如果是神或狼，要顯示功能
+const morningFunction = () => {
+  if (characterList[startNum - 1].team === "wolfs") {
+    gammingFunction.classList.remove("none")
+    gammingFunction.innerText = "自爆"
+    return
+  }
+  if (characterList[startNum - 1].character === "騎士") {
+    gammingFunction.classList.remove("none")
+    gammingFunction.innerText = "使用技能"
+    return
+  }
+  // *沒功能角色，關閉功能按鈕
+  gammingFunction.classList.add("none")
 }
 
 // TODO click 成員號碼、選擇
@@ -412,6 +447,26 @@ const numbersChoosesClick = () => {
       }
     }, false)
   })
+}
+
+// TODO click Next
+const functionNextClick = () => {
+  // 發言循環
+  let speakOrder = []
+  let lastCharacterLisetLen = characterList.length - 1
+  let nextFirst = startNum
+  for (let i = 1; i <= lastCharacterLisetLen; i++) {
+    // push 進發言循環 Arr
+    speakOrder.push(nextFirst)
+    // 若為最後一號，倒回去初始點 0，直至迴圈跑完
+    nextFirst === lastCharacterLisetLen ? nextFirst = 0 : nextFirst++
+  }
+
+  console.log(speakOrder)
+
+  gammingNext.addEventListener("click", () => {
+
+  }, false)
 }
 
 // *起始 - 模式畫面 & click 模式選擇
