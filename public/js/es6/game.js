@@ -365,13 +365,18 @@ const functionNextClick = () => {
   let lastCharacterLisetLen = characterList.length - 2
   let nextFirst = startNum + 1
 
-  // 處理 speakOrder Arr
+  // *處理 speakOrder Arr
   for (let i = 1; i <= lastCharacterLisetLen; i++) {
+    // 若女巫有毒要跳過這次迴圈
+    if (nextFirst === killed[1]) {
+      nextFirst++
+      continue
+    }
     // 若超過最後一號，倒回去初始點 0，直至迴圈跑完
     if (nextFirst > lastCharacterLisetLen + 2) nextFirst = 1
     // push 進發言循環 Arr
     speakOrder.push(nextFirst)
-    // TODO check
+    // 下一號
     nextFirst++
   }
 
