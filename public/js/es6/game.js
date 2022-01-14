@@ -201,12 +201,15 @@ const night = () => {
   giveCharacter.classList.add("none")
   gammingNumber.classList.add("none")
   gammingChoose.classList.add("none")
+  gammingFunction.classList.add("none")
+  gammingNext.classList.add("none")
   textTop.classList.remove("text-gold")
   gamming.classList.remove("none")
   textTop.innerText = "天黑請閉眼"
   gammingTips.innerText = "點擊畫面下一步"
   witchSkills.start = false
   morningCilck = false
+  order = 0
 
   // click app - 判定夜晚流程階段
   app.addEventListener("click", nightFlow, false)
@@ -384,6 +387,7 @@ const functionNextClick = () => {
 
   // *click next 下一步
   gammingNext.addEventListener("click", () => {
+    console.log("next")
     // TODO 進入投票環節
     if (speakOrder.length === 0) return
     // 換誰發言
@@ -401,6 +405,7 @@ const functionNextClick = () => {
   gammingFunction.addEventListener("click", () => {
     if (gammingFunction.innerText === "自爆") {
       console.log("自爆")
+      night()
       return
     }
     if (gammingFunction.innerText === "撞人") {
@@ -519,4 +524,6 @@ models.forEach((item, idx) => {
 })
 
 // TODO 1.女巫不能自救OK 2.發言順序OK & 下一位OK & 功能處理 3.投票環節 & !是否有遺言 & 死前是否有技能 4.不斷計分，有隊伍歸零，遊戲結束 5.結束畫面
+
+// TODO *調整部分：killed、startname、next、speakOrder 都要改成以原本的 idx 為主，且死掉人要從 characterList 刪除，才不會造成後面變數上的問題
 
