@@ -247,6 +247,16 @@
   cursor: pointer;
 }
 
+#gamming #gamming-function::-moz-selection,
+#gamming #gamming-next::-moz-selection {
+  color: #282726;
+}
+
+#gamming #gamming-function::selection,
+#gamming #gamming-next::selection {
+  color: #282726;
+}
+
 #gamming #gamming-function {
   background: #A37C27;
 }

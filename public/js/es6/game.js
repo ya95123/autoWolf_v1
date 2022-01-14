@@ -351,7 +351,7 @@ const morningFunction = (idx) => {
   }
   if (characterList[idx - 1].character === "騎士") {
     gammingFunction.classList.remove("none")
-    gammingFunction.innerText = "使用技能"
+    gammingFunction.innerText = "撞人"
     return
   }
   // *沒功能角色，關閉功能按鈕
@@ -367,16 +367,19 @@ const functionNextClick = () => {
 
   // 處理 speakOrder Arr
   for (let i = 1; i <= lastCharacterLisetLen; i++) {
+    // 若超過最後一號，倒回去初始點 0，直至迴圈跑完
+    if (nextFirst > lastCharacterLisetLen + 2) nextFirst = 1
     // push 進發言循環 Arr
     speakOrder.push(nextFirst)
-    // 若超過最後一號，倒回去初始點 0，直至迴圈跑完
-    nextFirst === lastCharacterLisetLen + 1 ? nextFirst = 0 : nextFirst++
+    // TODO check
+    nextFirst++
   }
 
   console.log(speakOrder)
 
-  // *click next
+  // *click next 下一步
   gammingNext.addEventListener("click", () => {
+    // TODO 進入投票環節
     if (speakOrder.length === 0) return
     // 換誰發言
     textTop.innerText = `${speakOrder[0]} 號開始發言`
@@ -387,6 +390,18 @@ const functionNextClick = () => {
 
     speakOrder.splice(0, 1)
     console.log(speakOrder)
+  }, false)
+
+  // TODO click function 角色技能
+  gammingFunction.addEventListener("click", () => {
+    if (gammingFunction.innerText === "自爆") {
+      console.log("自爆")
+      return
+    }
+    if (gammingFunction.innerText === "撞人") {
+      console.log("撞人")
+      return
+    }
   }, false)
 }
 
@@ -498,5 +513,5 @@ models.forEach((item, idx) => {
   }, false)
 })
 
-// TODO 1.女巫不能自救OK 2.發言順序OK & 下一位 & 功能處理 3.投票環節 & 是否有遺言 & 死前是否有技能 4.不斷計分，有隊伍歸零，遊戲結束 5.結束畫面
+// TODO 1.女巫不能自救OK 2.發言順序OK & 下一位OK & 功能處理 3.投票環節 & !是否有遺言 & 死前是否有技能 4.不斷計分，有隊伍歸零，遊戲結束 5.結束畫面
 

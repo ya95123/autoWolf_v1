@@ -187,6 +187,10 @@
 
   #gamming-function,
   #gamming-next {
+    &::selection {
+      color: $black;
+    }
+
     display: block;
     width: fit-content;
     padding: 2px 12px 4px;
