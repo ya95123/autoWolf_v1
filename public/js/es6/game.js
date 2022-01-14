@@ -337,25 +337,57 @@ const morning = () => {
   gammingTips.innerText = `(${characterList[startNum - 1].character})`
 
   // 判斷是否有功能
-  morningFunction()
+  morningFunction(startNum)
   // click function / next
   functionNextClick()
 }
 
-// TODO 如果是神或狼，要顯示功能
-const morningFunction = () => {
-  if (characterList[startNum - 1].team === "wolfs") {
+// TODO morning - 如果是神或狼，要顯示功能
+const morningFunction = (idx) => {
+  if (characterList[idx - 1].team === "wolfs") {
     gammingFunction.classList.remove("none")
     gammingFunction.innerText = "自爆"
     return
   }
-  if (characterList[startNum - 1].character === "騎士") {
+  if (characterList[idx - 1].character === "騎士") {
     gammingFunction.classList.remove("none")
     gammingFunction.innerText = "使用技能"
     return
   }
   // *沒功能角色，關閉功能按鈕
   gammingFunction.classList.add("none")
+}
+
+// TODO moring - click Next
+const functionNextClick = () => {
+  // 發言循環
+  let speakOrder = []
+  let lastCharacterLisetLen = characterList.length - 2
+  let nextFirst = startNum + 1
+
+  // 處理 speakOrder Arr
+  for (let i = 1; i <= lastCharacterLisetLen; i++) {
+    // push 進發言循環 Arr
+    speakOrder.push(nextFirst)
+    // 若超過最後一號，倒回去初始點 0，直至迴圈跑完
+    nextFirst === lastCharacterLisetLen + 1 ? nextFirst = 0 : nextFirst++
+  }
+
+  console.log(speakOrder)
+
+  // *click next
+  gammingNext.addEventListener("click", () => {
+    if (speakOrder.length === 0) return
+    // 換誰發言
+    textTop.innerText = `${speakOrder[0]} 號開始發言`
+    gammingTips.innerText = `(${characterList[speakOrder[0] - 1].character})`
+    if (speakOrder.length === 1) gammingNext.innerText = "投票"
+    // 判斷是否有功能
+    morningFunction(speakOrder[0])
+
+    speakOrder.splice(0, 1)
+    console.log(speakOrder)
+  }, false)
 }
 
 // TODO click 成員號碼、選擇
@@ -449,26 +481,6 @@ const numbersChoosesClick = () => {
   })
 }
 
-// TODO click Next
-const functionNextClick = () => {
-  // 發言循環
-  let speakOrder = []
-  let lastCharacterLisetLen = characterList.length - 1
-  let nextFirst = startNum
-  for (let i = 1; i <= lastCharacterLisetLen; i++) {
-    // push 進發言循環 Arr
-    speakOrder.push(nextFirst)
-    // 若為最後一號，倒回去初始點 0，直至迴圈跑完
-    nextFirst === lastCharacterLisetLen ? nextFirst = 0 : nextFirst++
-  }
-
-  console.log(speakOrder)
-
-  gammingNext.addEventListener("click", () => {
-
-  }, false)
-}
-
 // *起始 - 模式畫面 & click 模式選擇
 models.forEach((item, idx) => {
   // 插入 html
@@ -486,5 +498,5 @@ models.forEach((item, idx) => {
   }, false)
 })
 
-// TODO 1.女巫不能自救OK 2.發言順序 & 發言計時 & 下一位 3.投票環節 & 是否有遺言 & 死前是否有技能 4.不斷計分，有隊伍歸零，遊戲結束 5.結束畫面
+// TODO 1.女巫不能自救OK 2.發言順序OK & 下一位 & 功能處理 3.投票環節 & 是否有遺言 & 死前是否有技能 4.不斷計分，有隊伍歸零，遊戲結束 5.結束畫面
 
