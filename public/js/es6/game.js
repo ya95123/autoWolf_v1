@@ -431,7 +431,8 @@ const morning = () => {
   gammingNext.innerText = "下一位"
 
   // *天亮後第一位發言
-  // 沒有人死->隨機開始發言，有人死->第一個死後發言 TODO check 死兩人
+  // 沒有人死->隨機開始發言，有人死->第一個死後發言
+  // TODO check 連續死兩人，設ifelse 非0 就跑回圈找下一個 alive 的人，找到就 break for
   killed.length === 0 ? startNum = rand(0, characterList.length - 1) : startNum = killed[0] + 1
   // 超過最大的號碼，要回到初始號碼 1
   if (startNum >= characterList.length) startNum -= characterList.length
@@ -531,5 +532,5 @@ models.forEach((item, idx) => {
   }, false)
 })
 
-// TODO 1.女巫不能自救OK 2.發言順序OK & 下一位OK & 功能處理 3.投票環節 & !是否有遺言 & 死前是否有技能 4.不斷計分，有隊伍歸零，遊戲結束 5.結束畫面
+// TODO 2.發言順序OK & 下一位(連續雙死調整) & 功能處理 3.投票環節 & !是否有遺言 & 死前是否有技能 4.不斷計分，有隊伍歸零，遊戲結束 5.結束畫面
 
