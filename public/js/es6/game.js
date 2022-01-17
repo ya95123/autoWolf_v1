@@ -58,6 +58,7 @@ let numbers // 成員號碼 div
 let order = 0 // 流程順序
 let killed = [] // 夜晚被殺 [0]狼殺 [1]毒殺
 let witchSkills = { "antidote": true, "posion": true, "start": false } // 女巫的技能設定
+let score = [] // 分數紀錄
 let startNum // 開始發言號碼
 
 // functions
@@ -78,6 +79,10 @@ const selectModel = (idx) => {
 
   // 預設模式
   modelPlaying = cate[idx] // 玩的模式
+  // 記分欄初始分數
+  score = { "wolfs": modelPlaying.wolfsNum, "gods": modelPlaying.godsNum, "mans": modelPlaying.mansNum }
+  console.log(score)
+
   // 給身分
   give()
   // 發身分 畫面
@@ -130,7 +135,7 @@ const give = () => {
   // numbers DOM
   numbers = document.querySelectorAll(".number")
 
-  console.log(modelPlaying.characterAll) // 發完身分會剩 []
+  // console.log(modelPlaying.characterAll) // 發完身分會剩 []
   console.log(characterList) // 身分順序
 }
 
@@ -264,7 +269,7 @@ const nightFlow = (e) => {
     // 有解藥
     if (witchSkills.antidote === true) {
       // 是否刀到女巫 -> 是(不能自救)
-      characterList[killed[0] - 1].character === "女巫" ? gammingTips.innerText = `${killed[0]} 號被殺了，請問你要救他嗎？\n(女巫不能自救)` : gammingTips.innerText = `${killed[0]} 號被殺了，請問你要救他嗎？`
+      characterList[killed[0]].character === "女巫" ? gammingTips.innerText = `${characterList[killed[0]].id} 號被殺了，請問你要救他嗎？\n(女巫不能自救)` : gammingTips.innerText = `${characterList[killed[0]].id} 號被殺了，請問你要救他嗎？`
       chooses[0].innerText = "救"
       chooses[1].innerText = "不救"
       return
@@ -293,23 +298,26 @@ const nightFlow = (e) => {
       // 排序號碼 (數字排法的寫法)
       killed.sort((a, b) => { return a - b })
     }
-    // 刪除為 0 的
-    killed = killed.filter(num => { return num > 0 })
+    // 刪除為 -1 的
+    killed = killed.filter(num => { return num >= 0 })
     console.log(killed)
 
     // *有人死亡
     if (killed.length !== 0) {
-      textTop.innerText = `天亮了，今晚 ${killed} 號被殺了🩸`
+      killed.length === 1 ? textTop.innerText = `天亮了，今晚 ${characterList[killed[0]].id} 號被殺了🩸` : textTop.innerText = `天亮了，今晚 ${characterList[killed[0]].id},${characterList[killed[1]].id} 號被殺了🩸`
       gammingTips.innerText = "點擊畫面下一步"
 
       // 死掉的人不能再被點擊、紀錄狼、神、人 存活人數
       killed.forEach((item, idx) => {
         console.log(item)
         // dead 掉已死對象
-        numbers[item - 1].classList.add("dead")
-        characterList[item - 1].team === "wolfs" ? modelPlaying.wolfsNum-- : characterList[item - 1].team === "gods" ? modelPlaying.godsNum-- : modelPlaying.mansNum--
+        numbers[item].classList.add("dead")
+        // characterList 死亡狀態紀錄
+        characterList[item].alive = false
+        // 分數紀錄
+        characterList[item].team === "wolfs" ? score.wolfs-- : characterList[item].team === "gods" ? score.gods-- : score.mans--
       })
-      console.log(`狼：${modelPlaying.wolfsNum}, 神：${modelPlaying.godsNum}, 民：${modelPlaying.mansNum}`)
+      console.log(score)
       return
     }
     // *平安夜 -> 空陣列
@@ -322,106 +330,13 @@ const nightFlow = (e) => {
   morning()
 }
 
-// TODO 遊戲 - 天亮流程
-const morning = () => {
-  console.log("天亮發言開始")
-  // 關閉天黑流程的 app 監聽
-  app.removeEventListener("click", nightFlow, false)
-  // 打開 next btn
-  gammingNext.classList.remove("none")
-  gammingNext.innerText = "下一位"
-
-  // *天亮後第一位發言
-  // 沒有人死->隨機開始發言，有人死->第一個死後發言
-  killed.length === 0 ? startNum = rand(0, characterList.length - 1) + 1 : startNum = killed[0] + 1
-  // 超過最大的號碼，要回到初始號碼 1
-  if (startNum > characterList.length) startNum -= characterList.length
-  textTop.innerText = `${startNum} 號開始發言`
-  gammingTips.innerText = `(${characterList[startNum - 1].character})`
-
-  // 判斷是否有功能
-  morningFunction(startNum)
-  // click function / next
-  functionNextClick()
-}
-
-// TODO morning - 如果是神或狼，要顯示功能
-const morningFunction = (idx) => {
-  if (characterList[idx - 1].team === "wolfs") {
-    gammingFunction.classList.remove("none")
-    gammingFunction.innerText = "自爆"
-    return
-  }
-  if (characterList[idx - 1].character === "騎士") {
-    gammingFunction.classList.remove("none")
-    gammingFunction.innerText = "撞人"
-    return
-  }
-  // *沒功能角色，關閉功能按鈕
-  gammingFunction.classList.add("none")
-}
-
-// TODO moring - click Next
-const functionNextClick = () => {
-  // 發言循環
-  let speakOrder = []
-  let lastCharacterLisetLen = characterList.length - 2
-  let nextFirst = startNum + 1
-
-  // *處理 speakOrder Arr
-  for (let i = 1; i <= lastCharacterLisetLen; i++) {
-    // 若女巫有毒要跳過這次迴圈
-    if (nextFirst === killed[1]) {
-      nextFirst++
-      continue
-    }
-    // 若超過最後一號，倒回去初始點 0，直至迴圈跑完
-    if (nextFirst > lastCharacterLisetLen + 2) nextFirst = 1
-    // push 進發言循環 Arr
-    speakOrder.push(nextFirst)
-    // 下一號
-    nextFirst++
-  }
-
-  console.log(speakOrder)
-
-  // *click next 下一步
-  gammingNext.addEventListener("click", () => {
-    console.log("next")
-    // TODO 進入投票環節
-    if (speakOrder.length === 0) return
-    // 換誰發言
-    textTop.innerText = `${speakOrder[0]} 號開始發言`
-    gammingTips.innerText = `(${characterList[speakOrder[0] - 1].character})`
-    if (speakOrder.length === 1) gammingNext.innerText = "投票"
-    // 判斷是否有功能
-    morningFunction(speakOrder[0])
-
-    speakOrder.splice(0, 1)
-    console.log(speakOrder)
-  }, false)
-
-  // TODO click function 角色技能
-  gammingFunction.addEventListener("click", () => {
-    if (gammingFunction.innerText === "自爆") {
-      console.log("自爆")
-      night()
-      return
-    }
-    if (gammingFunction.innerText === "撞人") {
-      console.log("撞人")
-      return
-    }
-  }, false)
-}
-
 // TODO click 成員號碼、選擇
 const numbersChoosesClick = () => {
   // TODO click number
   numbers.forEach((item, idx) => {
     item.addEventListener("click", (e) => {
       e.preventDefault()
-
+      // !check 死亡方式
       // *預言家查驗
       if (modelPlaying.processNight[order] === "預") {
         characterList[idx].team !== "wolfs" ? alert(`${idx + 1} 號是好人👍\n預言家請閉眼😌`) : alert(`${idx + 1} 號是狼人👎\n預言家請閉眼😌`)
@@ -431,16 +346,16 @@ const numbersChoosesClick = () => {
 
       // *狼殺
       if (modelPlaying.processNight[order] === "狼") {
-        killed[0] = idx + 1
-        alert(`狼人請閉眼😌\n(狼人殺了 ${killed[0]} 號🩸)`)
+        killed[0] = idx
+        alert(`狼人請閉眼😌\n(狼人殺了 ${characterList[killed[0]].id} 號🩸)`)
         order++
         return
       }
 
       // *巫毒
       if (modelPlaying.processNight[order] === "巫") {
-        killed[1] = idx + 1
-        alert(`女巫請閉眼😌\n(女巫毒了 ${killed[1]} 號💀)`)
+        killed[1] = idx
+        alert(`女巫請閉眼😌\n(女巫毒了 ${characterList[killed[1]].id} 號💀)`)
         order++
         return
       }
@@ -456,18 +371,18 @@ const numbersChoosesClick = () => {
         // *救
         if (item.innerText === "救") {
           // 女巫自己被毒不能自救
-          if (characterList[killed[0] - 1].character === "女巫") {
+          if (characterList[killed[0]].character === "女巫") {
             alert("女巫不能自救🚫\n請點選「不救」")
             return
           }
           // 有毒藥
           if (witchSkills.posion === true) {
-            alert(`你要使用毒藥嗎？(今晚不能用了)\n女巫請閉眼😌\n(女巫救了 ${killed[0]} 號🔮)`)
+            alert(`你要使用毒藥嗎？(今晚不能用了)\n女巫請閉眼😌\n(女巫救了 ${characterList[killed[0]].id} 號🔮)`)
             witchSkills.antidote = false
-            killed[0] = 0
+            killed[0] = -1
           } else {
             // 無毒藥
-            alert(`女巫請閉眼😌\n(女巫救了 ${killed[0]} 號🔮)\n(女巫已無毒藥)`)
+            alert(`女巫請閉眼😌\n(女巫救了 ${characterList[killed[0]].id} 號🔮)\n(女巫已無毒藥)`)
           }
           order++
           return
@@ -506,6 +421,99 @@ const numbersChoosesClick = () => {
   })
 }
 
+// TODO 遊戲 - 天亮流程
+const morning = () => {
+  console.log("天亮發言開始")
+  // 關閉天黑流程的 app 監聽
+  app.removeEventListener("click", nightFlow, false)
+  // 打開 next btn
+  gammingNext.classList.remove("none")
+  gammingNext.innerText = "下一位"
+
+  // *天亮後第一位發言
+  // 沒有人死->隨機開始發言，有人死->第一個死後發言 TODO check 死兩人
+  killed.length === 0 ? startNum = rand(0, characterList.length - 1) : startNum = killed[0] + 1
+  // 超過最大的號碼，要回到初始號碼 1
+  if (startNum >= characterList.length) startNum -= characterList.length
+  textTop.innerText = `${characterList[startNum].id} 號開始發言`
+  gammingTips.innerText = `(${characterList[startNum].character})`
+
+  // 判斷是否有功能
+  morningFunction(startNum)
+  // click function / next
+  functionNextClick()
+}
+
+// TODO morning - 如果是神或狼，要顯示功能
+const morningFunction = (idx) => {
+  if (characterList[idx].team === "wolfs") {
+    gammingFunction.classList.remove("none")
+    gammingFunction.innerText = "自爆"
+    return
+  }
+  if (characterList[idx].character === "騎士") {
+    gammingFunction.classList.remove("none")
+    gammingFunction.innerText = "撞人"
+    return
+  }
+  // *沒功能角色，關閉功能按鈕
+  gammingFunction.classList.add("none")
+}
+
+// TODO moring - click Next
+const functionNextClick = () => {
+  // 發言循環
+  let speakOrder = []
+  let lastCharacterLisetLen = characterList.length - 2
+  let nextFirst = startNum + 1
+
+  // *處理 speakOrder Arr
+  for (let i = 0; i < lastCharacterLisetLen; i++) {
+    // 若超過最後一號，倒回去初始點 0，直至迴圈跑完
+    if (nextFirst > lastCharacterLisetLen + 1) nextFirst = 0
+
+    // 若女巫有毒要跳過這次迴圈 TODO check 已死的陣列
+    if (characterList[nextFirst].alive === false) {
+      nextFirst++
+      continue
+    }
+    // push 進發言循環 Arr
+    speakOrder.push(nextFirst)
+    // 下一號
+    nextFirst++
+  }
+
+  console.log(speakOrder)
+
+  // *click next 下一步
+  gammingNext.addEventListener("click", () => {
+    // TODO 進入投票環節
+    if (speakOrder.length === 0) return
+    // 換誰發言
+    textTop.innerText = `${characterList[speakOrder[0]].id} 號開始發言`
+    gammingTips.innerText = `(${characterList[speakOrder[0]].character})`
+    if (speakOrder.length === 1) gammingNext.innerText = "投票"
+    // 判斷是否有功能
+    morningFunction(speakOrder[0])
+
+    speakOrder.splice(0, 1)
+    console.log(speakOrder)
+  }, false)
+
+  // TODO click function 角色技能
+  gammingFunction.addEventListener("click", () => {
+    if (gammingFunction.innerText === "自爆") {
+      console.log("自爆")
+      night()
+      return
+    }
+    if (gammingFunction.innerText === "撞人") {
+      console.log("撞人")
+      return
+    }
+  }, false)
+}
+
 // *起始 - 模式畫面 & click 模式選擇
 models.forEach((item, idx) => {
   // 插入 html
@@ -524,6 +532,4 @@ models.forEach((item, idx) => {
 })
 
 // TODO 1.女巫不能自救OK 2.發言順序OK & 下一位OK & 功能處理 3.投票環節 & !是否有遺言 & 死前是否有技能 4.不斷計分，有隊伍歸零，遊戲結束 5.結束畫面
-
-// TODO *調整部分：killed、startname、next、speakOrder 都要改成以原本的 idx 為主，且死掉人要從 characterList 刪除，才不會造成後面變數上的問題
 
