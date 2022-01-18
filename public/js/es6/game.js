@@ -15,16 +15,16 @@ const chooses = document.querySelectorAll(".choose")
 const models = document.querySelectorAll(".model")
 const modelData = {
   "cate": [
-    {
-      "model": "自訂模式",
-      "peopleNum": "9-12",
-      "wolfsNum": "",
-      "godsNum": "",
-      "mansNum": "",
-      "chracterText": "",
-      "characterAll": [],
-      "processNight": ["天黑",]
-    },
+    // {
+    //   "model": "自訂模式",
+    //   "peopleNum": "9-12",
+    //   "wolfsNum": "",
+    //   "godsNum": "",
+    //   "mansNum": "",
+    //   "chracterText": "",
+    //   "characterAll": [],
+    //   "processNight": ["天黑",]
+    // },
     {
       "model": "一般局",
       "peopleNum": 9,
@@ -33,7 +33,7 @@ const modelData = {
       "mansNum": 3,
       "chracterText": "(3狼,預,女,獵,3民)",
       "characterAll": ["狼人", "狼人", "狼人", "預言家", "女巫", "獵人", "平民", "平民", "平民"],
-      "processNight": ["天黑", "預", "狼", "巫", "天亮"]
+      "processNight": ["天黑", "預", "狼", "巫", "天亮", "遺言"]
     },
     {
       "model": "狼王局",
@@ -43,7 +43,7 @@ const modelData = {
       "mansNum": 3,
       "chracterText": "(狼王,2狼,預,女,獵,騎,3民)",
       "characterAll": ["狼王", "狼人", "狼人", "預言家", "女巫", "獵人", "騎士", "平民", "平民", "平民"],
-      "processNight": ["天黑", "預", "狼", "巫", "天亮"]
+      "processNight": ["天黑", "預", "狼", "巫", "天亮", "遺言"]
     },
   ]
 }
@@ -60,6 +60,7 @@ let killed = [] // 夜晚被殺 [0]狼殺 [1]毒殺
 let witchSkills = { "antidote": true, "posion": true, "start": false } // 女巫的技能設定
 let score = [] // 分數紀錄
 let startNum // 開始發言號碼
+let firstNight = true // 是否為第一晚 -> 有遺言
 
 // functions
 // *區間亂數
@@ -71,17 +72,15 @@ const rand = (min, max) => {
 
 // *選擇模式
 const selectModel = (idx) => {
-  console.log(idx)
+  console.log(cate[idx].model)
   // 自訂模式
-  if (idx === 0) {
-    return
-  }
+  if (cate[idx].model === "自訂模式") return
 
   // 預設模式
   modelPlaying = cate[idx] // 玩的模式
   // 記分欄初始分數
   score = { "wolfs": modelPlaying.wolfsNum, "gods": modelPlaying.godsNum, "mans": modelPlaying.mansNum }
-  console.log(score)
+  console.log("初始計分", score)
 
   // 給身分
   give()
@@ -136,7 +135,7 @@ const give = () => {
   numbers = document.querySelectorAll(".number")
 
   // console.log(modelPlaying.characterAll) // 發完身分會剩 []
-  console.log(characterList) // 身分順序
+  console.log("身分：", characterList) // 身分順序
 }
 
 // *發身分 畫面
@@ -226,7 +225,7 @@ const night = () => {
 // *夜晚流程
 const nightFlow = (e) => {
   e.preventDefault()
-  console.log(modelPlaying.processNight[order])
+  console.log("夜晚流程：", modelPlaying.processNight[order])
 
   if (modelPlaying.processNight[order] === "天黑") {
     order++
@@ -248,7 +247,7 @@ const nightFlow = (e) => {
   }
 
   if (modelPlaying.processNight[order] === "巫") {
-    console.log(witchSkills)
+    console.log("女巫技能狀態：", witchSkills)
     // 功能已展開時，就不再往下跑了，避免跟後續動作衝突(Dom)
     if (witchSkills.start) return
     witchSkills.start = true
@@ -282,15 +281,13 @@ const nightFlow = (e) => {
   }
 
   if (modelPlaying.processNight[order] === "天亮") {
-    console.log(killed)
+    console.log(`狼刀 idx：${killed[0]}，巫毒 idx：${killed[1]}`)
     body.classList.remove("night")
     textTop.classList.remove("text-gold")
     gammingNumber.classList.add("none")
     gammingChoose.classList.add("none")
-    // 預備進天亮發言階段
-    order++
 
-    // *死、平安夜 (0死、1死、2死、同刀同毒)
+    // *處理 killed Arr -> 死、平安夜 (0死、1死、2死、同刀同毒)
     // 同刀同毒
     if (killed[0] === killed[1]) {
       killed = [killed[0]]
@@ -300,7 +297,14 @@ const nightFlow = (e) => {
     }
     // 刪除為 -1 的
     killed = killed.filter(num => { return num >= 0 })
-    console.log(killed)
+    console.log("死亡名單 idx：", killed)
+
+    // *預備進天亮遺言/發言階段 -> 平安夜 or 非第一晚跳過遺言
+    if (killed.length === 0 || firstNight === false) {
+      order += 2
+    } else {
+      order++
+    }
 
     // *有人死亡
     if (killed.length !== 0) {
@@ -309,7 +313,7 @@ const nightFlow = (e) => {
 
       // 死掉的人不能再被點擊、紀錄狼、神、人 存活人數
       killed.forEach((item, idx) => {
-        console.log(item)
+        // console.log(item)
         // dead 掉已死對象
         numbers[item].classList.add("dead")
         // characterList 死亡狀態紀錄
@@ -317,12 +321,20 @@ const nightFlow = (e) => {
         // 分數紀錄
         characterList[item].team === "wolfs" ? score.wolfs-- : characterList[item].team === "gods" ? score.gods-- : score.mans--
       })
-      console.log(score)
+      console.log("記分欄：", score)
       return
     }
     // *平安夜 -> 空陣列
     textTop.innerText = "天亮了，\n今晚是平安夜🌙"
     gammingTips.innerText = "點擊畫面下一步"
+    return
+  }
+
+  // *遺言
+  if (modelPlaying.processNight[order] === "遺言") {
+    killed.length === 1 ? textTop.innerText = `請 ${characterList[killed[0]].id} 號發表遺言` : textTop.innerText = `請 ${characterList[killed[0]].id},${characterList[killed[1]].id} 號發表遺言`
+    firstNight === false
+    order++
     return
   }
 
@@ -423,12 +435,13 @@ const numbersChoosesClick = () => {
 
 // TODO 遊戲 - 天亮流程
 const morning = () => {
-  console.log("天亮發言開始")
+  console.log("白天：開始發言")
+  console.log("身分：", characterList)
+
   // 關閉天黑流程的 app 監聽
   app.removeEventListener("click", nightFlow, false)
   // 打開 next btn
   gammingNext.classList.remove("none")
-  gammingNext.innerText = "下一位"
 
   // *天亮後第一位發言
   // 沒有人死->隨機開始發言，有人死->第一個死後發言
@@ -443,9 +456,12 @@ const morning = () => {
     // 直到找到活的
     startNum++
   }
-  console.log(characterList[startNum], characterList[startNum].alive)
+  console.log("發言第一位：idx", startNum, characterList[startNum])
+
+  // 提示
   textTop.innerText = `${characterList[startNum].id} 號開始發言`
   gammingTips.innerText = `(${characterList[startNum].character})`
+  gammingNext.innerText = "下一位"
 
   // 判斷是否有功能
   morningFunction(startNum)
@@ -473,13 +489,13 @@ const morningFunction = (idx) => {
 const functionNextClick = () => {
   // 發言循環
   let speakOrder = []
-  let lastCharacterLisetLen = characterList.length - 2
+  let lastCharacterLisetLen = characterList.length - 1
   let nextFirst = startNum + 1
 
   // *處理 speakOrder Arr
   for (let i = 0; i < lastCharacterLisetLen; i++) {
     // 若超過最後一號，倒回去初始點 0，直至迴圈跑完
-    if (nextFirst > lastCharacterLisetLen + 1) nextFirst = 0
+    if (nextFirst > lastCharacterLisetLen) nextFirst = 0
 
     // 若女巫有毒要跳過這次迴圈 TODO check 已死的陣列
     if (characterList[nextFirst].alive === false) {
@@ -492,12 +508,15 @@ const functionNextClick = () => {
     nextFirst++
   }
 
-  console.log(speakOrder)
+  console.log("發言順序 idx", speakOrder)
 
   // *click next 下一步
   gammingNext.addEventListener("click", () => {
     // TODO 進入投票環節
-    if (speakOrder.length === 0) return
+    if (speakOrder.length === 0) {
+      console.log("投票")
+      return
+    }
     // 換誰發言
     textTop.innerText = `${characterList[speakOrder[0]].id} 號開始發言`
     gammingTips.innerText = `(${characterList[speakOrder[0]].character})`
@@ -506,7 +525,7 @@ const functionNextClick = () => {
     morningFunction(speakOrder[0])
 
     speakOrder.splice(0, 1)
-    console.log(speakOrder)
+    // console.log("剩餘發言順序 idx",speakOrder)
   }, false)
 
   // TODO click function 角色技能
@@ -540,5 +559,5 @@ models.forEach((item, idx) => {
   }, false)
 })
 
-// TODO 2.發言順序OK & 下一位(連續雙死調整) & 功能處理 3.投票環節 & !是否有遺言 & 死前是否有技能 4.不斷計分，有隊伍歸零，遊戲結束 5.結束畫面
+// TODO 2.發言順序OK & 下一位(連續雙死調整)OK & 功能處理 3.投票環節 & !是否有遺言 & 死前是否有技能 4.不斷計分，有隊伍歸零，遊戲結束 5.結束畫面
 
