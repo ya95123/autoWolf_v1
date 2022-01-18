@@ -432,10 +432,18 @@ const morning = () => {
 
   // *天亮後第一位發言
   // 沒有人死->隨機開始發言，有人死->第一個死後發言
-  // TODO check 連續死兩人，設ifelse 非0 就跑回圈找下一個 alive 的人，找到就 break for
   killed.length === 0 ? startNum = rand(0, characterList.length - 1) : startNum = killed[0] + 1
-  // 超過最大的號碼，要回到初始號碼 1
-  if (startNum >= characterList.length) startNum -= characterList.length
+  // 確保 startNum 為存活對象
+  while (startNum >= characterList.length || characterList[startNum].alive !== true) {
+    // 超過最大的號碼，要回到初始號碼 1
+    if (startNum >= characterList.length) {
+      startNum -= characterList.length
+      continue
+    }
+    // 直到找到活的
+    startNum++
+  }
+  console.log(characterList[startNum], characterList[startNum].alive)
   textTop.innerText = `${characterList[startNum].id} 號開始發言`
   gammingTips.innerText = `(${characterList[startNum].character})`
 
