@@ -469,7 +469,7 @@ const morning = () => {
   handleSpeakOrder()
 }
 
-// TODO 白天 - 判斷是神或狼，要顯示功能
+// *白天 - 判斷是神或狼，要顯示功能
 const morningFunction = (idx) => {
   if (characterList[idx].team === "wolfs") {
     gammingFunction.classList.remove("none")
@@ -485,8 +485,7 @@ const morningFunction = (idx) => {
   gammingFunction.classList.add("none")
 }
 
-// TODO 白天 - click Next
-// TODO 白天 - 處理發言循環 Arr、呼叫 click next、function 事件
+// *白天 - 處理發言循環 Arr、呼叫 click next、function 事件
 const handleSpeakOrder = () => {
   // 發言循環
   speakOrder = []
@@ -518,6 +517,8 @@ const handleSpeakOrder = () => {
 
 // TODO click next 下一步
 const nextClick = () => {
+  console.log("發言順序 idx", speakOrder)
+
   // TODO 進入投票環節
   if (speakOrder.length === 0) {
     console.log("投票")
@@ -530,13 +531,21 @@ const nextClick = () => {
   // 判斷是否有功能
   morningFunction(speakOrder[0])
 
+  // 刪去已發言者
   speakOrder.splice(0, 1)
 }
 
 // TODO click function 角色技能
 const functionClick = () => {
   if (gammingFunction.innerText === "自爆") {
-    console.log("自爆")
+    console.log("自爆", characterList[speakOrder[0]])
+    // TODO 現在會去到下一個的 id，調整方向-> splice 調整執行順序
+    // dead 掉已死對象
+    numbers[speakOrder[0]].classList.add("dead")
+    // characterList 死亡狀態紀錄
+    characterList[speakOrder[0]].alive = false
+    // 分數紀錄
+    characterList[speakOrder[0]].team === "wolfs" ? score.wolfs-- : characterList[speakOrder[0]].team === "gods" ? score.gods-- : score.mans--
     night()
     return
   }
@@ -563,4 +572,4 @@ models.forEach((item, idx) => {
   }, false)
 })
 
-// TODO  1.功能處理&第二、三晚 call night()，會重複跑到 number/choose 的迴圈監聽 3.投票環節 & !是否有遺言 & 死前是否有技能 4.不斷計分，有隊伍歸零，遊戲結束 5.結束畫面
+// TODO  1.功能處理->狼人 3.投票環節 & !是否有遺言 & 死前是否有技能 4.不斷計分，有隊伍歸零，遊戲結束 5.結束畫面
