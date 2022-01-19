@@ -60,6 +60,9 @@ let witchSkills = { "antidote": true, "posion": true, "start": false } // 女巫
 let score = [] // 分數紀錄
 let startNum // 開始發言號碼
 let firstNight = true // 是否為第一晚 -> 有遺言
+let speakOrder = [] // 白天發言循環 arr
+let lastCharacterLisetLen // 白天剩餘發言的長度
+let nextFirst // 白天下一位發言的 idx
 
 // functions
 // *區間亂數
@@ -170,6 +173,7 @@ const giveHtml = () => {
 
     // *最後一號人物時開使遊戲
     if (giveCharacterOrder === lastOrder) {
+      // 進入夜晚
       night()
       return
     }
@@ -210,6 +214,10 @@ const night = () => {
   witchSkills.start = false
   morningCilck = false
   order = 0
+
+  // 關閉白天的 next、function 監聽
+  gammingNext.removeEventListener("click", nextClick, false)
+  gammingFunction.removeEventListener("click", functionClick, false)
 
   // click app - 判定夜晚流程階段
   app.addEventListener("click", nightFlow, false)
@@ -335,7 +343,7 @@ const nightFlow = (e) => {
   morning()
 }
 
-// TODO click 成員號碼、選擇
+// TODO click 成員號碼、選擇 - 在建立完 numbers 呼叫
 const numbersChoosesClick = () => {
   // TODO click number
   numbers.forEach((item, idx) => {
@@ -457,11 +465,11 @@ const morning = () => {
 
   // 判斷是否有功能
   morningFunction(startNum)
-  // click function / next
-  functionNextClick()
+  // 處理發言循環、呼叫 next、function 事件
+  handleSpeakOrder()
 }
 
-// TODO morning - 如果是神或狼，要顯示功能
+// TODO 白天 - 判斷是神或狼，要顯示功能
 const morningFunction = (idx) => {
   if (characterList[idx].team === "wolfs") {
     gammingFunction.classList.remove("none")
@@ -477,12 +485,13 @@ const morningFunction = (idx) => {
   gammingFunction.classList.add("none")
 }
 
-// TODO moring - click Next
-const functionNextClick = () => {
+// TODO 白天 - click Next
+// TODO 白天 - 處理發言循環 Arr、呼叫 click next、function 事件
+const handleSpeakOrder = () => {
   // 發言循環
-  let speakOrder = []
-  let lastCharacterLisetLen = characterList.length - 1
-  let nextFirst = startNum + 1
+  speakOrder = []
+  lastCharacterLisetLen = characterList.length - 1
+  nextFirst = startNum + 1
 
   // *處理 speakOrder Arr
   for (let i = 0; i < lastCharacterLisetLen; i++) {
@@ -502,36 +511,39 @@ const functionNextClick = () => {
 
   console.log("發言順序 idx", speakOrder)
 
-  // *click next 下一步
-  gammingNext.addEventListener("click", () => {
-    // TODO 進入投票環節
-    if (speakOrder.length === 0) {
-      console.log("投票")
-      return
-    }
-    // 換誰發言
-    textTop.innerText = `${characterList[speakOrder[0]].id} 號開始發言`
-    gammingTips.innerText = `(${characterList[speakOrder[0]].character})`
-    if (speakOrder.length === 1) gammingNext.innerText = "投票"
-    // 判斷是否有功能
-    morningFunction(speakOrder[0])
+  // 呼叫 next、function 事件
+  gammingNext.addEventListener("click", nextClick, false)
+  gammingFunction.addEventListener("click", functionClick, false)
+}
 
-    speakOrder.splice(0, 1)
-    // console.log("剩餘發言順序 idx",speakOrder)
-  }, false)
+// TODO click next 下一步
+const nextClick = () => {
+  // TODO 進入投票環節
+  if (speakOrder.length === 0) {
+    console.log("投票")
+    return
+  }
+  // 換誰發言
+  textTop.innerText = `${characterList[speakOrder[0]].id} 號開始發言`
+  gammingTips.innerText = `(${characterList[speakOrder[0]].character})`
+  if (speakOrder.length === 1) gammingNext.innerText = "投票"
+  // 判斷是否有功能
+  morningFunction(speakOrder[0])
 
-  // TODO click function 角色技能
-  gammingFunction.addEventListener("click", () => {
-    if (gammingFunction.innerText === "自爆") {
-      console.log("自爆")
-      night()
-      return
-    }
-    if (gammingFunction.innerText === "撞人") {
-      console.log("撞人")
-      return
-    }
-  }, false)
+  speakOrder.splice(0, 1)
+}
+
+// TODO click function 角色技能
+const functionClick = () => {
+  if (gammingFunction.innerText === "自爆") {
+    console.log("自爆")
+    night()
+    return
+  }
+  if (gammingFunction.innerText === "撞人") {
+    console.log("撞人")
+    return
+  }
 }
 
 // *起始 - 模式畫面 & click 模式選擇
