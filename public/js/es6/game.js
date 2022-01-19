@@ -51,7 +51,6 @@ const modelData = {
 let cate = modelData.cate
 let modelPlaying = {} // 所選模式
 let characterList = [] // 給的 身分 & 順序
-let wolfsNum, godsNum, mansNum // 狼，神，民 - 數量
 let giveCharacterOrder = 0 // 發身分順序紀錄
 let giveTipsText // 發身分提示變化換
 let numbers // 成員號碼 div
@@ -100,11 +99,6 @@ const give = () => {
   let id, character, randNum, team
   let allNum = modelPlaying.peopleNum - 1
 
-  // 狼神民 - 數量
-  wolfsNum = modelPlaying.wolfsNum
-  godsNum = modelPlaying.godsNum
-  mansNum = modelPlaying.mansNum
-
   // 設定初始直
   for (let i = 0; i < modelPlaying.peopleNum; i++) {
     id = i + 1
@@ -133,6 +127,8 @@ const give = () => {
 
   // numbers DOM
   numbers = document.querySelectorAll(".number")
+  // 開始監聽 numbers、chooses 點擊事件
+  numbersChoosesClick()
 
   // console.log(modelPlaying.characterAll) // 發完身分會剩 []
   console.log("身分：", characterList) // 身分順序
@@ -217,9 +213,6 @@ const night = () => {
 
   // click app - 判定夜晚流程階段
   app.addEventListener("click", nightFlow, false)
-
-  // click 成員號碼、選擇
-  numbersChoosesClick()
 }
 
 // *夜晚流程
@@ -348,7 +341,6 @@ const numbersChoosesClick = () => {
   numbers.forEach((item, idx) => {
     item.addEventListener("click", (e) => {
       e.preventDefault()
-      // !check 死亡方式
       // *預言家查驗
       if (modelPlaying.processNight[order] === "預") {
         characterList[idx].team !== "wolfs" ? alert(`${idx + 1} 號是好人👍\n預言家請閉眼😌`) : alert(`${idx + 1} 號是狼人👎\n預言家請閉眼😌`)
@@ -559,5 +551,4 @@ models.forEach((item, idx) => {
   }, false)
 })
 
-// TODO 2.發言順序OK & 下一位(連續雙死調整)OK & 功能處理 3.投票環節 & !是否有遺言 & 死前是否有技能 4.不斷計分，有隊伍歸零，遊戲結束 5.結束畫面
-
+// TODO  1.功能處理&第二、三晚 call night()，會重複跑到 number/choose 的迴圈監聽 3.投票環節 & !是否有遺言 & 死前是否有技能 4.不斷計分，有隊伍歸零，遊戲結束 5.結束畫面
