@@ -154,7 +154,7 @@ img {
 
 .text-top {
   color: #fff;
-  font-size: 68px;
+  font-size: 62px;
   letter-spacing: 2px;
   text-align: center;
   margin: 0 0 5%;
@@ -196,6 +196,7 @@ img {
     top: 3px;
   }
   .text-top {
-    font-size: 44px;
+    font-size: 38px;
+    padding: 0 16px;
   }
 }
