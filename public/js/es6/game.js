@@ -215,6 +215,7 @@ const night = () => {
   witchSkills.start = false
   morningCilck = false
   order = 0
+  killed = []
 
   // 關閉白天的 next、function 監聽
   gammingNext.removeEventListener("click", nextClick, false)
@@ -237,6 +238,8 @@ const nightFlow = (e) => {
   }
 
   if (modelPlaying.processNight[order] === "預") {
+    // TODO 預言家已死狀態
+
     textTop.innerText = "預言家請睜眼"
     gammingTips.innerText = "請選擇你要查驗的對象"
     textTop.classList.add("text-gold")
@@ -259,6 +262,8 @@ const nightFlow = (e) => {
     // 關閉成員
     gammingNumber.classList.add("none")
     textTop.innerText = "女巫請睜眼"
+
+    // TODO 女巫已死狀態
 
     // *無解藥，無毒藥
     if (witchSkills.antidote === false && witchSkills.posion === false) {
@@ -379,7 +384,8 @@ const numbersChoosesClick = () => {
       // !白天
       // *狼王帶人
       if (characterList[speakOrder[0]].character === "狼王") {
-        console.log("狼王帶有對象 idx", idx, characterList[idx])
+        console.log("狼王帶走對象 idx", idx, characterList[idx])
+        alert(`${characterList[speakOrder[0]].id} 號帶走了 ${characterList[idx].id} 號🩸`)
         // 死亡紀錄
         deadOne(idx)
         // 如果遊戲未結束，進天黑
@@ -599,7 +605,21 @@ const deadOne = (idx) => {
 
 // *遊戲結束
 const gameOver = () => {
+  console.log("身分：", characterList)
   console.log("遊戲結束", score)
+  // 背景環境設定
+  body.classList.remove("night")
+  gammingNumber.classList.add("none")
+  gammingFunction.classList.add("none")
+  gammingNext.classList.add("none")
+  textTop.classList.remove("text-gold")
+
+  // 關閉夜晚 app 監聽
+  app.removeEventListener("click", nightFlow, false)
+
+  // 文字
+  score.wolfs === 0 ? textTop.innerText = "好人獲勝\n🙌" : textTop.innerText = "狼人獲勝\n🐺"
+  gammingTips.innerText = `剩下 ${score.wolfs} 狼 ${score.gods} 神 ${score.mans} 民\n重整頁面，再來一局！`
 }
 
 // *起始 - 模式畫面 & click 模式選擇
