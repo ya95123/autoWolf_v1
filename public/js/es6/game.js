@@ -58,6 +58,7 @@ let order = 0 // 流程順序
 let killed = [] // 夜晚被殺 [0]狼殺 [1]毒殺
 let witchSkills = { "antidote": true, "posion": true, "start": false } // 女巫的技能設定
 let score = [] // 分數紀錄
+let isGameOver = false // 是否遊戲結束
 let startNum // 開始發言號碼
 let firstNight = true // 是否為第一晚 -> 有遺言
 let speakOrder = [] // 白天發言循環 arr
@@ -221,6 +222,8 @@ const night = () => {
 
   // click app - 判定夜晚流程階段
   app.addEventListener("click", nightFlow, false)
+  // 每晚計分
+  console.log("記分欄：", score)
 }
 
 // *夜晚流程
@@ -315,14 +318,14 @@ const nightFlow = (e) => {
       // 死掉的人不能再被點擊、紀錄狼、神、人 存活人數
       killed.forEach((item, idx) => {
         // console.log(item)
-        // dead 掉已死對象
-        numbers[item].classList.add("dead")
-        // characterList 死亡狀態紀錄
-        characterList[item].alive = false
-        // 分數紀錄
-        characterList[item].team === "wolfs" ? score.wolfs-- : characterList[item].team === "gods" ? score.gods-- : score.mans--
+        // 死亡紀錄
+        deadOne(item)
       })
       console.log("記分欄：", score)
+
+      // 是否遊戲結束
+      if (isGameOver === true) gameOver()
+
       return
     }
     // *平安夜 -> 空陣列
@@ -349,6 +352,7 @@ const numbersChoosesClick = () => {
   numbers.forEach((item, idx) => {
     item.addEventListener("click", (e) => {
       e.preventDefault()
+      // !夜晚
       // *預言家查驗
       if (modelPlaying.processNight[order] === "預") {
         characterList[idx].team !== "wolfs" ? alert(`${idx + 1} 號是好人👍\n預言家請閉眼😌`) : alert(`${idx + 1} 號是狼人👎\n預言家請閉眼😌`)
@@ -369,6 +373,17 @@ const numbersChoosesClick = () => {
         killed[1] = idx
         alert(`女巫請閉眼😌\n(女巫毒了 ${characterList[killed[1]].id} 號💀)`)
         order++
+        return
+      }
+
+      // !白天
+      // *狼王帶人
+      if (characterList[speakOrder[0]].character === "狼王") {
+        console.log("狼王帶有對象 idx", idx, characterList[idx])
+        // 死亡紀錄
+        deadOne(idx)
+        // 如果遊戲未結束，進天黑
+        isGameOver === false ? night() : gameOver()
         return
       }
     }, false)
@@ -538,12 +553,14 @@ const nextClick = () => {
 const functionClick = () => {
   if (gammingFunction.innerText === "自爆") {
     console.log("自爆 idx", speakOrder[0], characterList[speakOrder[0]])
-    // dead 掉已死對象
-    numbers[speakOrder[0]].classList.add("dead")
-    // characterList 死亡狀態紀錄
-    characterList[speakOrder[0]].alive = false
-    // 分數紀錄
-    characterList[speakOrder[0]].team === "wolfs" ? score.wolfs-- : characterList[speakOrder[0]].team === "gods" ? score.gods-- : score.mans--
+    // 死亡紀錄
+    deadOne(speakOrder[0])
+
+    // 是否遊戲結束
+    if (isGameOver === true) {
+      gameOver()
+      return
+    }
 
     // 狼王帶人
     if (characterList[speakOrder[0]].character === "狼王") {
@@ -557,6 +574,7 @@ const functionClick = () => {
       gammingTips.innerText = `(${characterList[speakOrder[0]].character}) 請選擇你要帶走的對象🩸`
       return
     }
+    // 進天黑
     night()
     return
   }
@@ -564,6 +582,24 @@ const functionClick = () => {
     console.log("撞人")
     return
   }
+}
+
+// *有人死亡 -> 傳 idx 進來，正式遊戲結束要要在流程內判斷
+const deadOne = (idx) => {
+  // dead 掉已死對象
+  numbers[idx].classList.add("dead")
+  // characterList 死亡狀態紀錄
+  characterList[idx].alive = false
+  // 分數紀錄
+  characterList[idx].team === "wolfs" ? score.wolfs-- : characterList[idx].team === "gods" ? score.gods-- : score.mans--
+
+  // 判斷遊戲是否結束調整 isGameOver true/false
+  if (score.wolfs === 0 || score.gods === 0 || score.mans === 0) isGameOver = true
+}
+
+// *遊戲結束
+const gameOver = () => {
+  console.log("遊戲結束", score)
 }
 
 // *起始 - 模式畫面 & click 模式選擇
