@@ -538,13 +538,25 @@ const nextClick = () => {
 const functionClick = () => {
   if (gammingFunction.innerText === "自爆") {
     console.log("自爆 idx", speakOrder[0], characterList[speakOrder[0]])
-    // TODO 現在會去到下一個的 id，調整方向-> splice 調整執行順序
     // dead 掉已死對象
     numbers[speakOrder[0]].classList.add("dead")
     // characterList 死亡狀態紀錄
     characterList[speakOrder[0]].alive = false
     // 分數紀錄
     characterList[speakOrder[0]].team === "wolfs" ? score.wolfs-- : characterList[speakOrder[0]].team === "gods" ? score.gods-- : score.mans--
+
+    // 狼王帶人
+    if (characterList[speakOrder[0]].character === "狼王") {
+      // 關閉白天按鈕
+      gammingFunction.classList.add("none")
+      gammingNext.classList.add("none")
+      // 打開成員號碼
+      gammingNumber.classList.remove("none")
+      // 更改文字
+      textTop.innerText = `${characterList[speakOrder[0]].id} 號啟動角色技能`
+      gammingTips.innerText = `(${characterList[speakOrder[0]].character}) 請選擇你要帶走的對象🩸`
+      return
+    }
     night()
     return
   }
