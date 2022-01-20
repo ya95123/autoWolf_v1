@@ -138,7 +138,7 @@
 }
 
 #gamming {
-  width: 420px;
+  width: 500px;
   max-width: 100%;
 }
 
@@ -322,6 +322,9 @@
   }
   #giveCharacter .give-tips {
     bottom: 18%;
+  }
+  #gamming {
+    width: 420px;
   }
   #gamming #gamming-tips {
     font-size: 16px;
