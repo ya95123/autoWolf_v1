@@ -489,15 +489,15 @@ const morningFunction = (idx) => {
 const handleSpeakOrder = () => {
   // 發言循環
   speakOrder = []
-  lastCharacterLisetLen = characterList.length - 1
-  nextFirst = startNum + 1
+  lastCharacterLisetLen = characterList.length
+  nextFirst = startNum
 
   // *處理 speakOrder Arr
   for (let i = 0; i < lastCharacterLisetLen; i++) {
     // 若超過最後一號，倒回去初始點 0，直至迴圈跑完
-    if (nextFirst > lastCharacterLisetLen) nextFirst = 0
+    if (nextFirst >= lastCharacterLisetLen) nextFirst = 0
 
-    // 若女巫有毒要跳過這次迴圈 TODO check 已死的陣列
+    // 若有已死的跳過這次迴圈
     if (characterList[nextFirst].alive === false) {
       nextFirst++
       continue
@@ -517,6 +517,8 @@ const handleSpeakOrder = () => {
 
 // TODO click next 下一步
 const nextClick = () => {
+  // 刪去已發言者
+  speakOrder.splice(0, 1)
   console.log("發言順序 idx", speakOrder)
 
   // TODO 進入投票環節
@@ -530,15 +532,12 @@ const nextClick = () => {
   if (speakOrder.length === 1) gammingNext.innerText = "投票"
   // 判斷是否有功能
   morningFunction(speakOrder[0])
-
-  // 刪去已發言者
-  speakOrder.splice(0, 1)
 }
 
 // TODO click function 角色技能
 const functionClick = () => {
   if (gammingFunction.innerText === "自爆") {
-    console.log("自爆", characterList[speakOrder[0]])
+    console.log("自爆 idx", speakOrder[0], characterList[speakOrder[0]])
     // TODO 現在會去到下一個的 id，調整方向-> splice 調整執行順序
     // dead 掉已死對象
     numbers[speakOrder[0]].classList.add("dead")
