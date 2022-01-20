@@ -392,6 +392,32 @@ const numbersChoosesClick = () => {
         isGameOver === false ? night() : gameOver()
         return
       }
+
+      // *騎士撞人
+      if (characterList[speakOrder[0]].character === "騎士") {
+        console.log("騎士撞了對象 idx", idx, characterList[idx])
+
+        // 即將死的人對象
+        let knightKill
+
+        // 狼死
+        if (characterList[idx].team === "wolfs") {
+          knightKill = idx
+          // TODO 撞到狼王
+
+          alert(`${characterList[knightKill].id} 號是狼人🐺\n狼人死了，騎士活著。`)
+        } else {
+          // 騎士死
+          knightKill = speakOrder[0]
+          alert(`${characterList[knightKill].id} 號是好人👍\n騎士以死謝罪。`)
+        }
+
+        // 死亡紀錄
+        deadOne(knightKill)
+        // 如果遊戲未結束，進天黑
+        isGameOver === false ? night() : gameOver()
+        return
+      }
     }, false)
   })
 
@@ -557,6 +583,7 @@ const nextClick = () => {
 
 // TODO click function 角色技能
 const functionClick = () => {
+  // *狼人
   if (gammingFunction.innerText === "自爆") {
     console.log("自爆 idx", speakOrder[0], characterList[speakOrder[0]])
     // 死亡紀錄
@@ -584,8 +611,18 @@ const functionClick = () => {
     night()
     return
   }
+
+  // *騎士
   if (gammingFunction.innerText === "撞人") {
     console.log("撞人")
+    // 關閉白天按鈕
+    gammingFunction.classList.add("none")
+    gammingNext.classList.add("none")
+    // 打開成員號碼
+    gammingNumber.classList.remove("none")
+    // 更改文字
+    textTop.innerText = `${characterList[speakOrder[0]].id} 號騎士`
+    gammingTips.innerText = `(${characterList[speakOrder[0]].character}) 請選擇你要撞的對象🦄`
     return
   }
 }
@@ -639,4 +676,4 @@ models.forEach((item, idx) => {
   }, false)
 })
 
-// TODO  1.功能處理->狼人 3.投票環節 & !是否有遺言 & 死前是否有技能 4.不斷計分，有隊伍歸零，遊戲結束 5.結束畫面
+// TODO 1.功能處理->狼人OK、騎士 2.夜晚->預言家、女巫已死的狀態 3.投票環節 & 是否有遺言 & 死前是否有技能(狼王、獵人，被毒沒有) 4.不斷計分，有隊伍歸零，遊戲結束(缺狼刀優先的部分)
