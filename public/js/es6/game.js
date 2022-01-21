@@ -382,7 +382,7 @@ const numbersChoosesClick = () => {
       }
 
       // !白天
-      // *狼王帶人
+      // *狼王帶人 || characterList[knightKill].character === "狼王"
       if (characterList[speakOrder[0]].character === "狼王") {
         console.log("狼王帶走對象 idx", idx, characterList[idx])
         alert(`${characterList[speakOrder[0]].id} 號帶走了 ${characterList[idx].id} 號🩸`)
@@ -396,19 +396,28 @@ const numbersChoosesClick = () => {
       // *騎士撞人
       if (characterList[speakOrder[0]].character === "騎士") {
         console.log("騎士撞了對象 idx", idx, characterList[idx])
+        // *狼王死
+        if (characterList[idx].character === "狼王") {
+          alert(`${characterList[idx].id} 號是狼人🐺\n狼人死了，騎士活著。`)
+          textTop.innerText = `${characterList[idx].id} 號啟動角色技能`
+          gammingTips.innerText = `(${characterList[idx].character}) 請選擇你要帶走的對象🩸`
 
-        // 即將死的人對象
-        let knightKill
+          // 讓發言順序進到狼王，使下次點擊 numbers 進到狼王的功能裡
+          speakOrder[0] = idx
 
-        // 狼死
+          // 死亡紀錄
+          deadOne(idx)
+          return
+        }
+
+        // *狼死
+        let knightKill// 騎士即將撞死的對象
         if (characterList[idx].team === "wolfs") {
-          knightKill = idx
-          // TODO 撞到狼王
-
+          knightKill = idx // 狼
           alert(`${characterList[knightKill].id} 號是狼人🐺\n狼人死了，騎士活著。`)
         } else {
-          // 騎士死
-          knightKill = speakOrder[0]
+          // *騎士死
+          knightKill = speakOrder[0] // 騎士自己
           alert(`${characterList[knightKill].id} 號是好人👍\n騎士以死謝罪。`)
         }
 
@@ -581,7 +590,7 @@ const nextClick = () => {
   morningFunction(speakOrder[0])
 }
 
-// TODO click function 角色技能
+// *click function 角色技能
 const functionClick = () => {
   // *狼人
   if (gammingFunction.innerText === "自爆") {
