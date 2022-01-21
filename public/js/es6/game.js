@@ -343,12 +343,20 @@ const nightFlow = (e) => {
     killed = killed.filter(num => { return num >= 0 })
     console.log("死亡名單 idx：", killed)
 
-    // TODO 預備進天亮遺言/發言階段 -> 平安夜 or 非第一晚跳過遺言
-    if (killed.length === 0 || firstNight === false) {
-      order += 2
-    } else {
+    // TODO 第一晚 && 有人死 進遺言，否則無遺言，還是有 bug
+    if (firstNight === true && killed.length !== 0) {
+      // 有遺言
       order++
+    } else {
+      // 無遺言
+      order += 2
     }
+
+    // 之後皆非第一晚
+    firstNight === false
+    console.log(order)
+    console.log(modelPlaying.processNight[order])
+
 
     // *有人死亡
     if (killed.length !== 0) {
@@ -359,9 +367,6 @@ const nightFlow = (e) => {
       if (nightGodsState.witch.antidote === true) killed.forEach(item => deadOne(item))
 
       console.log("記分欄：", score)
-
-      // // 是否遊戲結束
-      // if (isGameOver === true) gameOver()
       return
     }
 
@@ -375,7 +380,6 @@ const nightFlow = (e) => {
   // *遺言
   if (modelPlaying.processNight[order] === "遺言") {
     killed.length === 1 ? textTop.innerText = `請 ${characterList[killed[0]].id} 號發表遺言` : textTop.innerText = `請 ${characterList[killed[0]].id},${characterList[killed[1]].id} 號發表遺言`
-    firstNight === false
     order++
     return
   }
@@ -492,6 +496,7 @@ const numbersChoosesClick = () => {
           // 女巫自己被毒不能自救
           if (characterList[killed[0]].character === "女巫") {
             alert("女巫不能自救🚫\n請點選「不救」")
+            order++
             return
           }
 
@@ -745,4 +750,4 @@ models.forEach((item, idx) => {
   }, false)
 })
 
-// TODO 1.功能處理->狼人OK、騎士OK 2.夜晚->預言家、女巫已死的狀態OK 3.投票環節 & 是否有遺言 & 死前是否有技能(狼王、獵人，被毒沒有) 4.不斷計分，有隊伍歸零，遊戲結束(缺狼刀優先的部分)
+// TODO 1.天亮的遺言(只有第一晚) 2.死前是否有技能(狼王、獵人，被毒沒有) 3.投票環節 4.白天出去的遺言 5.外加新功能 - 顯示計分在畫面上
