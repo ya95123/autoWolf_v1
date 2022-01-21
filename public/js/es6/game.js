@@ -74,7 +74,6 @@ let nightGodsState = {
     "alive": true
   }
 }
-let witchSkills = { "antidote": true, "poison": true, "start": false } // 女巫的技能設定
 
 // functions
 // *區間亂數
@@ -252,7 +251,7 @@ const nightFlow = (e) => {
     textTop.classList.add("text-gold")
     textTop.innerText = "預言家請睜眼"
 
-    // TODO 預言家已死狀態
+    // *預言家已死狀態
     if (nightGodsState.prophet.alive === false) {
       gammingTips.innerText = "(預言家已死👻)\n請選擇你要查驗的對象\n預言家請閉眼😌\n\n點擊畫面下一步"
       order++
@@ -318,7 +317,7 @@ const nightFlow = (e) => {
       chooses[1].innerText = "不救"
       return
     }
-    // 無解藥，有毒藥
+    // *無解藥，有毒藥
     gammingTips.innerText = "請問你要使用毒藥嗎？"
     chooses[0].innerText = "毒"
     chooses[1].innerText = "不毒"
@@ -344,7 +343,7 @@ const nightFlow = (e) => {
     killed = killed.filter(num => { return num >= 0 })
     console.log("死亡名單 idx：", killed)
 
-    // *預備進天亮遺言/發言階段 -> 平安夜 or 非第一晚跳過遺言
+    // TODO 預備進天亮遺言/發言階段 -> 平安夜 or 非第一晚跳過遺言
     if (killed.length === 0 || firstNight === false) {
       order += 2
     } else {
@@ -356,22 +355,20 @@ const nightFlow = (e) => {
       killed.length === 1 ? textTop.innerText = `天亮了，今晚 ${characterList[killed[0]].id} 號被殺了🩸` : textTop.innerText = `天亮了，今晚 ${characterList[killed[0]].id},${characterList[killed[1]].id} 號被殺了🩸`
       gammingTips.innerText = "點擊畫面下一步"
 
-      // 死掉的人不能再被點擊、紀錄狼、神、人 存活人數
-      killed.forEach((item, idx) => {
-        // console.log(item)
-        // 死亡紀錄
-        deadOne(item)
-      })
+      // !巫有解藥時才紀錄 死亡狀態 / 無解藥時，在夜晚當下紀錄
+      if (nightGodsState.witch.antidote === true) killed.forEach(item => deadOne(item))
+
       console.log("記分欄：", score)
 
-      // 是否遊戲結束
-      if (isGameOver === true) gameOver()
-
+      // // 是否遊戲結束
+      // if (isGameOver === true) gameOver()
       return
     }
+
     // *平安夜 -> 空陣列
     textTop.innerText = "天亮了，\n今晚是平安夜🌙"
     gammingTips.innerText = "點擊畫面下一步"
+    console.log("記分欄：", score)
     return
   }
 
@@ -406,14 +403,32 @@ const numbersChoosesClick = () => {
         killed[0] = idx
         alert(`狼人請閉眼😌\n(狼人殺了 ${characterList[killed[0]].id} 號🩸)`)
         order++
+
+        // *巫沒有解藥直接計算死亡，天亮後就不要再重複計算
+        if (nightGodsState.witch.antidote === false) {
+          deadOne(killed[0])
+          console.log("記分欄：", score)
+        }
+        // 是否遊戲提前結束
+        if (isGameOver === true) {
+          gameOver()
+          alert(`天亮了，狼人殺了 ${characterList[killed[0]].id} 號🩸\n女巫已無解藥，狼人獲勝！`)
+        }
         return
       }
 
       // *巫毒
       if (modelPlaying.processNight[order] === "巫") {
         killed[1] = idx
+        nightGodsState.witch.poisonTarget = killed[1]
         alert(`女巫請閉眼😌\n(女巫毒了 ${characterList[killed[1]].id} 號💀)`)
         order++
+
+        // *巫沒有解藥直接計算死亡，天亮後就不要再重複計算
+        if (nightGodsState.witch.antidote === false) {
+          deadOne(killed[1])
+          console.log("記分欄：", score)
+        }
         return
       }
 
@@ -449,12 +464,12 @@ const numbersChoosesClick = () => {
         // *狼死
         let knightKill// 騎士即將撞死的對象
         if (characterList[idx].team === "wolfs") {
+          alert(`${characterList[idx].id} 號是狼人🐺\n狼人死了，騎士活著。`)
           knightKill = idx // 狼
-          alert(`${characterList[knightKill].id} 號是狼人🐺\n狼人死了，騎士活著。`)
         } else {
           // *騎士死
+          alert(`${characterList[idx].id} 號是好人👍\n騎士以死謝罪。`)
           knightKill = speakOrder[0] // 騎士自己
-          alert(`${characterList[knightKill].id} 號是好人👍\n騎士以死謝罪。`)
         }
 
         // 死亡紀錄
@@ -479,15 +494,14 @@ const numbersChoosesClick = () => {
             alert("女巫不能自救🚫\n請點選「不救」")
             return
           }
-          // 有毒藥
-          if (nightGodsState.witch.poison === true) {
-            alert(`你要使用毒藥嗎？(今晚不能用了)\n女巫請閉眼😌\n(女巫救了 ${characterList[killed[0]].id} 號🔮)`)
-            nightGodsState.witch.antidote = false
-            killed[0] = -1
-          } else {
-            // 無毒藥
-            alert(`女巫請閉眼😌\n(女巫救了 ${characterList[killed[0]].id} 號🔮)\n(女巫已無毒藥)`)
-          }
+
+          // 有毒藥 / 無毒藥
+          nightGodsState.witch.poison === true ? alert(`你要使用毒藥嗎？(今晚不能用了)\n女巫請閉眼😌\n(女巫救了 ${characterList[killed[0]].id} 號🔮)`) : alert(`女巫請閉眼😌\n(女巫救了 ${characterList[killed[0]].id} 號🔮)\n(女巫已無毒藥)`)
+
+          // 用掉解藥
+          nightGodsState.witch.antidote = false
+          killed[0] = -1
+
           order++
           return
         }
@@ -527,6 +541,12 @@ const numbersChoosesClick = () => {
 
 // TODO 遊戲 - 天亮流程
 const morning = () => {
+  // 是否遊戲結束
+  if (isGameOver === true) {
+    gameOver()
+    return
+  }
+
   console.log("白天：開始發言")
   console.log("身分：", characterList)
 
@@ -725,4 +745,4 @@ models.forEach((item, idx) => {
   }, false)
 })
 
-// TODO 1.功能處理->狼人OK、騎士OK 2.夜晚->預言家、女巫已死的狀態 3.投票環節 & 是否有遺言 & 死前是否有技能(狼王、獵人，被毒沒有) 4.不斷計分，有隊伍歸零，遊戲結束(缺狼刀優先的部分)
+// TODO 1.功能處理->狼人OK、騎士OK 2.夜晚->預言家、女巫已死的狀態OK 3.投票環節 & 是否有遺言 & 死前是否有技能(狼王、獵人，被毒沒有) 4.不斷計分，有隊伍歸零，遊戲結束(缺狼刀優先的部分)
