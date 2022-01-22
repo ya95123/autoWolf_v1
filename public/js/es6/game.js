@@ -59,7 +59,6 @@ let killed = [] // 夜晚被殺 [0]狼殺 [1]毒殺
 let score = [] // 分數紀錄
 let isGameOver = false // 是否遊戲結束
 let startNum // 開始發言號碼
-let firstNight = true // 是否為第一晚 -> 有遺言
 let speakOrder = [] // 白天發言循環 arr
 let lastCharacterLisetLen // 白天剩餘發言的長度
 let nextFirst // 白天下一位發言的 idx
@@ -92,7 +91,7 @@ const selectModel = (idx) => {
   // 預設模式
   modelPlaying = cate[idx] // 玩的模式
   // 記分欄初始分數
-  score = { "wolfs": modelPlaying.wolfsNum, "gods": modelPlaying.godsNum, "mans": modelPlaying.mansNum }
+  score = { "day": 0, "wolfs": modelPlaying.wolfsNum, "gods": modelPlaying.godsNum, "mans": modelPlaying.mansNum }
   console.log("初始計分", score)
 
   // 給身分
@@ -226,6 +225,7 @@ const night = () => {
   morningCilck = false
   order = 0
   killed = []
+  score.day++
 
   // 關閉白天的 next、function 監聽
   gammingNext.removeEventListener("click", nextClick, false)
@@ -343,20 +343,12 @@ const nightFlow = (e) => {
     killed = killed.filter(num => { return num >= 0 })
     console.log("死亡名單 idx：", killed)
 
-    // TODO 第一晚 && 有人死 進遺言，否則無遺言，還是有 bug
-    if (firstNight === true && killed.length !== 0) {
-      // 有遺言
+    // *只有第一晚有人死才有遺言，有遺言 ++ 無遺言 +=2
+    if (score.day === 1 && killed.length !== 0) {
       order++
     } else {
-      // 無遺言
       order += 2
     }
-
-    // 之後皆非第一晚
-    firstNight === false
-    console.log(order)
-    console.log(modelPlaying.processNight[order])
-
 
     // *有人死亡
     if (killed.length !== 0) {
