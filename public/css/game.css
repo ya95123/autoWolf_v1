@@ -264,6 +264,11 @@
   background: #6A8A82;
 }
 
+#gamming .voteToNight {
+  margin: 0 auto !important;
+  background: #282726 !important;
+}
+
 @-webkit-keyframes bgShine {
   0% {
     opacity: 0.5;

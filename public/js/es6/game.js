@@ -223,8 +223,8 @@ const night = () => {
   giveCharacter.classList.add("none")
   gammingNumber.classList.add("none")
   gammingChoose.classList.add("none")
-  gammingFunction.classList.add("none")
   gammingNext.classList.add("none")
+  gammingFunction.setAttribute("class", "none")
   textTop.classList.remove("text-gold")
   gamming.classList.remove("none")
   textTop.innerText = "天黑請閉眼"
@@ -465,6 +465,39 @@ const numbersChoosesClick = () => {
       }
 
       // !白天
+      // *投票
+      if (textTop.innerText === "進行投票") {
+        console.log(`${characterList[idx].id} 號被投出去了`, characterList[idx])
+        // 死亡紀錄
+        deadOne(idx)
+
+        // 是否遊戲結束
+        if (isGameOver === true) {
+          gameOver()
+          return
+        }
+
+        // 如果投到 獵人 or 狼王
+        if (characterList[idx].character === "獵人" || characterList[idx].character === "狼王") {
+          speakOrder[0] = idx
+          alert(`${characterList[idx].id} 號被投出去了，請發表遺言後，啟動角色技能。`)
+
+          // 關閉 進天黑
+          gammingFunction.classList.add("none")
+
+          // 文字
+          textTop.innerText = `${characterList[idx].id} 號啟動角色技能`
+          gammingTips.innerText = `(${characterList[idx].character}) 請選擇你要帶走的對象🩸`
+
+          return
+        }
+
+        // 非獵人 or 狼王
+        alert(`${characterList[idx].id} 號被投出去了，請發表遺言。`)
+        night()
+        return
+      }
+
       // *獵人 or 狼王帶人
       if (characterList[speakOrder[0]].character === "獵人" || characterList[speakOrder[0]].character === "狼王") {
         console.log(`${characterList[speakOrder[0]].character} 帶走對象 idx`, idx, characterList[idx])
@@ -520,7 +553,7 @@ const numbersChoosesClick = () => {
     }, false)
   })
 
-  // TODO click choose
+  // *click choose
   chooses.forEach(item => {
     item.addEventListener("click", (e) => {
       console.log(item.innerText)
@@ -576,7 +609,7 @@ const numbersChoosesClick = () => {
         return
       }
 
-      // TODO 獵人 or 狼王 (夜晚被刀)
+      // *獵人 or 狼王 (夜晚被刀)
       if (characterList[killed[nightState.nightKillOrder]].character === "獵人" || characterList[killed[nightState.nightKillOrder]].character === "狼王") {
         // 關閉 chooses
         gammingChoose.classList.add("none")
@@ -727,17 +760,27 @@ const handleSpeakOrder = () => {
   gammingFunction.addEventListener("click", functionClick, false)
 }
 
-// TODO click next 下一步
+// *click next 下一步
 const nextClick = () => {
   // 刪去已發言者
   speakOrder.splice(0, 1)
   console.log("發言順序 idx", speakOrder)
 
-  // TODO 進入投票環節
+  // *進入投票環節
   if (speakOrder.length === 0) {
     console.log("投票")
+    // 關閉 next、打開 numbers
+    gammingNext.classList.add("none")
+    gammingNumber.classList.remove("none")
+    gammingFunction.setAttribute("class", "voteToNight")
+
+    // 文字
+    textTop.innerText = "進行投票"
+    gammingTips.innerText = "數到 3，請比出要投出去的對象\n若無人出局、連續兩次平票\n請點選「進天黑」"
+    gammingFunction.innerText = "進天黑"
     return
   }
+
   // 換誰發言
   textTop.innerText = `${characterList[speakOrder[0]].id} 號開始發言`
   gammingTips.innerText = `(${characterList[speakOrder[0]].character})`
@@ -788,6 +831,13 @@ const functionClick = () => {
     // 更改文字
     textTop.innerText = `${characterList[speakOrder[0]].id} 號騎士`
     gammingTips.innerText = `(${characterList[speakOrder[0]].character}) 請選擇你要撞的對象🦄`
+    return
+  }
+
+  // *進天黑(投票環節：無人出局)
+  if (gammingFunction.innerText === "進天黑") {
+    console.log("進天黑")
+    night()
     return
   }
 }
@@ -845,6 +895,4 @@ models.forEach((item, idx) => {
   }, false)
 })
 
-// TODO 1.天亮的遺言(只有第一晚)OK 2.夜晚死前是否有技能(狼王、獵人，被毒沒有) 3.投票環節 4.白天出去的遺言&技能 5.外加新功能 - 顯示計分在畫面上
-// TODO test：狼王(帶人、帶獵人/不帶)OK、獵人(帶人、帶狼王/不帶)OK、女巫毒(狼王、獵人)OK、女巫救(狼王、獵人)OK
-// TODO add:狼王或獵人互帶到都要啟動技能
+// TODO 1.天亮的遺言(只有第一晚)OK 2.夜晚死前是否有技能(狼王、獵人，被毒沒有)OK 3.投票環節 4.白天出去的遺言&技能 5.外加新功能 - 顯示計分在畫面上
