@@ -438,23 +438,39 @@ const numbersChoosesClick = () => {
         return
       }
 
-      // *獵人 or 狼王 被刀帶人
+      // *獵人 or 狼王 夜晚被刀帶人
       if (nightState.nightKillOrder >= 0) {
         if (characterList[killed[nightState.nightKillOrder]].character === "獵人" || characterList[killed[nightState.nightKillOrder]].character === "狼王") {
           console.log(`${characterList[killed[nightState.nightKillOrder]].character} 號帶走對象 idx`, idx, characterList[idx])
           alert(`${characterList[killed[nightState.nightKillOrder]].id} 號帶走了 ${characterList[idx].id} 號🩸`)
-
-          // nightState.nightKillOrder 的變化 -> 被殺僅為 1 人(結束 nightKillOrder) / 被殺超過 1 人(繼續判斷下一人)
-          killed.length === 1 ? nightState.nightKillOrder = -1 : nightState.nightKillOrder++
           // 死亡紀錄
           deadOne(idx)
           console.log("記分欄：", score)
 
+          // nightState.nightKillOrder 的變化 -> 被殺僅為 1 人(結束 nightKillOrder) / 被殺超過 1 人(繼續判斷下一人)
+          killed.length === 1 ? nightState.nightKillOrder = -1 : nightState.nightKillOrder++
+
           // *如果帶到獵人 or 狼王 -> 繼續帶人(遊戲未結束的話) test
           if (characterList[idx].character === "獵人" || characterList[idx].character === "狼王") {
+            // 是否遊戲結束
+            if (isGameOver === true) {
+              gameOver()
+              return
+            }
+            // 導到啟動技能
             speakOrder[0] = idx
+            // 結束 nightKillOrder
+            nightState.nightKillOrder = -1
+
+            // 關閉 numbers、打開 chooses
+            gammingNumber.classList.add("none")
+            gammingChoose.classList.remove("none")
+
+            // 文字
             textTop.innerText = `${characterList[idx].id} 號啟動角色技能`
             gammingTips.innerText = `(${characterList[idx].character}) 請選擇你要帶走的對象🩸`
+            chooses[0].innerText = "帶人"
+            chooses[1].innerText = "不帶"
             return
           }
 
@@ -504,6 +520,29 @@ const numbersChoosesClick = () => {
         alert(`${characterList[speakOrder[0]].id} 號帶走了 ${characterList[idx].id} 號🩸`)
         // 死亡紀錄
         deadOne(idx)
+
+        // *如果帶到獵人 or 狼王 -> 繼續帶人(遊戲未結束的話) test
+        if (characterList[idx].character === "獵人" || characterList[idx].character === "狼王") {
+          // 是否遊戲結束
+          if (isGameOver === true) {
+            gameOver()
+            return
+          }
+
+          // 導到啟動技能
+          speakOrder[0] = idx
+
+          // 關閉 numbers、打開 chooses
+          gammingNumber.classList.add("none")
+          gammingChoose.classList.remove("none")
+
+          // 文字
+          textTop.innerText = `${characterList[idx].id} 號啟動角色技能`
+          gammingTips.innerText = `(${characterList[idx].character}) 請選擇你要帶走的對象🩸`
+          chooses[0].innerText = "帶人"
+          chooses[1].innerText = "不帶"
+          return
+        }
 
         // 如果是夜晚被刀的話，要進 正式天亮
         if (nightState.night === true) {
@@ -609,11 +648,33 @@ const numbersChoosesClick = () => {
       }
 
       // *獵人 or 狼王 (夜晚被刀)
-      if (characterList[killed[nightState.nightKillOrder]].character === "獵人" || characterList[killed[nightState.nightKillOrder]].character === "狼王") {
+      if (nightState.nightKillOrder >= 0) {
+        if (characterList[killed[nightState.nightKillOrder]].character === "獵人" || characterList[killed[nightState.nightKillOrder]].character === "狼王") {
+          // 關閉 chooses
+          gammingChoose.classList.add("none")
+          // 已啟動技能
+          characterList[killed[nightState.nightKillOrder]].character === "獵人" ? nightState.hunter.function = false : nightState.wolfKing.function = false
+
+          // *帶人
+          if (item.innerText === "帶人") {
+            // 打開 numbers
+            gammingNumber.classList.remove("none")
+            return
+          }
+
+          // *不帶
+          // nightState.nightKillOrder 的變化 & 導流
+          killed.length === 1 ? nightState.nightKillOrder = -1 : nightState.nightKillOrder++
+          // 回到 morning
+          morning()
+          return
+        }
+      }
+
+      // *獵人 or 狼王 (夜晚、白天 -> "被帶"、"被投")
+      if (characterList[speakOrder[0]].character === "獵人" || characterList[speakOrder[0]].character === "狼王") {
         // 關閉 chooses
         gammingChoose.classList.add("none")
-        // 已啟動技能
-        characterList[killed[nightState.nightKillOrder]].character === "獵人" ? nightState.hunter.function = false : nightState.wolfKing.function = false
 
         // *帶人
         if (item.innerText === "帶人") {
@@ -622,18 +683,14 @@ const numbersChoosesClick = () => {
           return
         }
 
-        // *不帶
-        // nightState.nightKillOrder 的變化 & 導流
-        killed.length === 1 ? nightState.nightKillOrder = -1 : nightState.nightKillOrder++
-        // 回到 morning
-        morning()
-        return
+        // *不帶 - 夜晚被帶 -> 進白天 / 白天被帶 -> 進天黑
+        nightState.night === true ? morning() : night()
       }
     }, false)
   })
 }
 
-// TODO 遊戲 - 天亮流程
+// *遊戲 - 天亮流程
 const morning = () => {
   // 是否遊戲結束
   if (isGameOver === true) {
@@ -894,4 +951,5 @@ models.forEach((item, idx) => {
   }, false)
 })
 
-// TODO 1.天亮的遺言(只有第一晚)OK 2.夜晚死前是否有技能(狼王、獵人，被毒沒有)OK 3.投票環節 4.白天出去的遺言&技能 5.外加新功能 - 顯示計分在畫面上
+// TODO 1.天亮的遺言(只有第一晚)OK 2.夜晚死前是否有技能(狼王、獵人，被毒沒有)OK 3.投票環節OK 4.白天出去的遺言&技能OK 5.外加新功能 - 顯示計分在畫面上
+// TODO 1.獵人跟狼王啟動技能時應該都要先出現選擇 才能不能帶
