@@ -78,6 +78,7 @@ let nightState = {
   "wolfKing": {
     "function": true
   },
+  "night": true,
   "nightKillOrder": 0
 }
 
@@ -229,6 +230,7 @@ const night = () => {
   textTop.innerText = "天黑請閉眼"
   gammingTips.innerText = "點擊畫面下一步"
   nightState.witch.start = false
+  nightState.night = true
   morningCilck = false
   nightState.nightKillOrder = 0
   order = 0
@@ -436,7 +438,7 @@ const numbersChoosesClick = () => {
         return
       }
 
-      // TODO 獵人 or 被刀帶人
+      // *獵人 or 狼王 被刀帶人
       if (nightState.nightKillOrder >= 0) {
         if (characterList[killed[nightState.nightKillOrder]].character === "獵人" || characterList[killed[nightState.nightKillOrder]].character === "狼王") {
           console.log(`${characterList[killed[nightState.nightKillOrder]].character} 號帶走對象 idx`, idx, characterList[idx])
@@ -447,6 +449,15 @@ const numbersChoosesClick = () => {
           // 死亡紀錄
           deadOne(idx)
           console.log("記分欄：", score)
+
+          // *如果帶到獵人 or 狼王 -> 繼續帶人(遊戲未結束的話) test
+          if (characterList[idx].character === "獵人" || characterList[idx].character === "狼王") {
+            speakOrder[0] = idx
+            textTop.innerText = `${characterList[idx].id} 號啟動角色技能`
+            gammingTips.innerText = `(${characterList[idx].character}) 請選擇你要帶走的對象🩸`
+            return
+          }
+
           // 導回天亮
           morning()
           return
@@ -454,12 +465,19 @@ const numbersChoosesClick = () => {
       }
 
       // !白天
-      // *狼王帶人
-      if (characterList[speakOrder[0]].character === "狼王") {
-        console.log("狼王帶走對象 idx", idx, characterList[idx])
+      // *獵人 or 狼王帶人
+      if (characterList[speakOrder[0]].character === "獵人" || characterList[speakOrder[0]].character === "狼王") {
+        console.log(`${characterList[speakOrder[0]].character} 帶走對象 idx`, idx, characterList[idx])
         alert(`${characterList[speakOrder[0]].id} 號帶走了 ${characterList[idx].id} 號🩸`)
         // 死亡紀錄
         deadOne(idx)
+
+        // 如果是夜晚被刀的話，要進 正式天亮
+        if (nightState.night === true) {
+          morning()
+          return
+        }
+
         // 如果遊戲未結束，進天黑
         isGameOver === false ? night() : gameOver()
         return
@@ -596,7 +614,7 @@ const morning = () => {
   // 關閉 numbers
   gammingNumber.classList.add("none")
 
-  // TODO 獵人 or 狼王死掉 啟動技能
+  // *獵人 or 狼王死掉 啟動技能
   if (killed.length !== 0 && nightState.nightKillOrder >= 0) {
     // 獵人啟動技能 && 尚未啟動技能 && 不是被女巫毒的
     if (characterList[killed[nightState.nightKillOrder]].character === "獵人" && nightState.hunter.function === true && nightState.witch.poisonTarget !== killed[nightState.nightKillOrder]) {
@@ -628,6 +646,8 @@ const morning = () => {
   // 通過啟動技能後，關閉 nightState.nightKillOrder，避免造成 bug
   nightState.nightKillOrder = -1
 
+  // *正式天亮
+  nightState.night = false
   console.log("白天：開始發言")
   console.log("身分：", characterList)
 
