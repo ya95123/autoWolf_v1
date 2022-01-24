@@ -390,9 +390,9 @@ const nightFlow = (e) => {
   morning()
 }
 
-// TODO click 成員號碼、選擇 - 在建立完 numbers 呼叫
+// *click 成員號碼、選擇 - 在建立完 numbers 呼叫
 const numbersChoosesClick = () => {
-  // TODO click number
+  // *click number
   numbers.forEach((item, idx) => {
     item.addEventListener("click", (e) => {
       e.preventDefault()
@@ -564,7 +564,6 @@ const numbersChoosesClick = () => {
           // 女巫自己被毒不能自救
           if (characterList[killed[0]].character === "女巫") {
             alert("女巫不能自救🚫\n請點選「不救」")
-            order++
             return
           }
 
