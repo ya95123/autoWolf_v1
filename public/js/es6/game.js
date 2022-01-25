@@ -300,6 +300,10 @@ const nightFlow = (e) => {
       if (functionState.witch.antidote === false && functionState.witch.poison === false) {
         gammingTips.innerText = "(女巫已死👻)\n你已使用完兩瓶藥\n女巫請閉眼😌\n\n點擊畫面下一步"
       }
+      // 無解、有毒
+      if (functionState.witch.antidote === false && functionState.witch.poison === true) {
+        gammingTips.innerText = "(女巫已死👻)\n你要使用毒藥嗎？\n女巫請閉眼😌\n\n點擊畫面下一步"
+      }
       // 有解、無毒
       if (functionState.witch.antidote === true && functionState.witch.poison === false) {
         gammingTips.innerText = `(女巫已死👻)\n${characterList[killed[0]].id} 號被殺了，請問你要救他嗎？\n女巫請閉眼😌\n\n點擊畫面下一步`
@@ -368,8 +372,8 @@ const nightFlow = (e) => {
       killed.length === 1 ? textTop.innerText = `天亮了，今晚 ${characterList[killed[0]].id} 號被殺了🩸` : textTop.innerText = `天亮了，今晚 ${characterList[killed[0]].id},${characterList[killed[1]].id} 號被殺了🩸`
       gammingTips.innerText = "點擊畫面下一步"
 
-      // !巫有解藥時才紀錄 死亡狀態 / 無解藥時，在夜晚當下紀錄
-      if (functionState.witch.antidote === true) killed.forEach(item => deadOne(item))
+      // 死亡紀錄
+      killed.forEach(item => deadOne(item))
 
       console.log("記分欄：", score)
       return
@@ -413,15 +417,17 @@ const numbersChoosesClick = () => {
         alert(`狼人請閉眼😌\n(狼人殺了 ${characterList[killed[0]].id} 號🩸)`)
         order++
 
-        // *巫沒有解藥直接計算死亡，天亮後就不要再重複計算
+        // !狼刀到最後一民 or 最後一神 && 女巫沒解藥時，直接進遊戲結束
         if (functionState.witch.antidote === false) {
-          deadOne(killed[0])
-          console.log("記分欄：", score)
-        }
-        // 是否遊戲提前結束
-        if (isGameOver === true) {
-          gameOver()
-          alert(`天亮了，狼人殺了 ${characterList[killed[0]].id} 號🩸\n女巫已無解藥，狼人獲勝！`)
+          if ((characterList[killed[0]].team === "mans" && score.mans === 1) || (characterList[killed[0]].team === "gods" && score.gods === 1)) {
+            // 死亡紀錄
+            deadOne(killed[0])
+            console.log("記分欄：", score)
+
+            // 遊戲提前結束
+            gameOver()
+            alert(`天亮了，狼人殺了 ${characterList[killed[0]].id} 號🩸\n女巫已無解藥，狼人獲勝！`)
+          }
         }
         return
       }
@@ -432,26 +438,24 @@ const numbersChoosesClick = () => {
         functionState.witch.poisonTarget = killed[1]
         alert(`女巫請閉眼😌\n(女巫毒了 ${characterList[killed[1]].id} 號💀)`)
         order++
-
-        // *巫沒有解藥直接計算死亡，天亮後就不要再重複計算
-        if (functionState.witch.antidote === false) {
-          deadOne(killed[1])
-          console.log("記分欄：", score)
-        }
         return
       }
 
       // *獵人 or 狼王 夜晚被刀帶人
       if (functionState.nightKillOrder >= 0) {
         if (characterList[killed[functionState.nightKillOrder]].character === "獵人" || characterList[killed[functionState.nightKillOrder]].character === "狼王") {
-          console.log(`${characterList[killed[functionState.nightKillOrder]].character} 號帶走對象 idx`, idx, characterList[idx])
+          console.log(`${characterList[killed[functionState.nightKillOrder]].character} 帶走對象 idx`, idx, characterList[idx])
           alert(`${characterList[killed[functionState.nightKillOrder]].id} 號帶走了 ${characterList[idx].id} 號🩸`)
           // 死亡紀錄
           deadOne(idx)
           console.log("記分欄：", score)
 
-          // functionState.nightKillOrder 的變化 -> 被殺僅為 1 人(結束 nightKillOrder) / 被殺超過 1 人(繼續判斷下一人)
-          killed.length === 1 ? functionState.nightKillOrder = -1 : functionState.nightKillOrder++
+          // *functionState.nightKillOrder 的變化 -> 被殺為 2 人且 nightKillOrder === 0 (繼續判斷下一人) / 其他 (結束 nightKillOrder)
+          if (killed.length === 2 && functionState.nightKillOrder === 0) {
+            functionState.nightKillOrder++
+          } else {
+            functionState.nightKillOrder = -1
+          }
 
           // *如果帶到獵人 or 狼王 -> 繼續帶人(遊戲未結束的話) test
           if (characterList[idx].character === "獵人" || characterList[idx].character === "狼王") {
@@ -477,7 +481,7 @@ const numbersChoosesClick = () => {
             return
           }
 
-          // 導回天亮
+          // *導回天亮
           morning()
           return
         }
@@ -511,7 +515,7 @@ const numbersChoosesClick = () => {
           return
         }
 
-        // 非獵人 or 狼王
+        // TODO alert 順序 非獵人 or 狼王
         alert(`${characterList[idx].id} 號被投出去了，請發表遺言。`)
         night()
         return
@@ -667,8 +671,13 @@ const numbersChoosesClick = () => {
 
           // *不帶
           // functionState.nightKillOrder 的變化 & 導流
-          killed.length === 1 ? functionState.nightKillOrder = -1 : functionState.nightKillOrder++
-          // 回到 morning
+          if (killed.length === 2 && functionState.nightKillOrder === 0) {
+            functionState.nightKillOrder++
+          } else {
+            functionState.nightKillOrder = -1
+          }
+
+          // *回到 morning
           morning()
           return
         }
@@ -731,6 +740,13 @@ const morning = () => {
       chooses[1].innerText = "不帶"
       // 打開選項
       gammingChoose.classList.remove("none")
+      return
+    }
+
+    // !如果有兩死，killed[0] 非獵人/狼王，讓 nightKillOrder ++ 再跑一次 mornig 確保若兩死都跑到
+    if (killed.length === 2 && functionState.nightKillOrder === 0) {
+      functionState.nightKillOrder++
+      morning()
       return
     }
   }
@@ -956,4 +972,4 @@ models.forEach((item, idx) => {
   }, false)
 })
 
-// TODO 0.騎士撞過人就不能再撞了 1.外加新功能 - 顯示計分在畫面上 2.測試
+// TODO 0.騎士撞過人就不能再撞了OK 1.外加新功能 - 顯示計分在畫面上 2.測試
