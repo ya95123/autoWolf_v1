@@ -506,7 +506,6 @@ const numbersChoosesClick = () => {
         // 如果投到 獵人 or 狼王
         if (characterList[idx].character === "獵人" || characterList[idx].character === "狼王") {
           speakOrder[0] = idx
-          // alert(`${characterList[idx].id} 號被投出去了，請發表遺言後，啟動角色技能。`)
 
           // 關閉 進天黑、numbers、打開 chooses
           gammingFunction.classList.add("none")
@@ -521,8 +520,6 @@ const numbersChoosesClick = () => {
           return
         }
 
-        // TODO alert 順序 非獵人 or 狼王
-        // alert(`${characterList[idx].id} 號被投出去了，請發表遺言。`)
         night()
         return
       }
