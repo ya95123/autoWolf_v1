@@ -500,23 +500,29 @@ const numbersChoosesClick = () => {
           return
         }
 
+        // 發表遺言
+        alert(`${characterList[idx].id} 號被投出去了，請發表遺言。`)
+
         // 如果投到 獵人 or 狼王
         if (characterList[idx].character === "獵人" || characterList[idx].character === "狼王") {
           speakOrder[0] = idx
-          alert(`${characterList[idx].id} 號被投出去了，請發表遺言後，啟動角色技能。`)
+          // alert(`${characterList[idx].id} 號被投出去了，請發表遺言後，啟動角色技能。`)
 
-          // 關閉 進天黑
+          // 關閉 進天黑、numbers、打開 chooses
           gammingFunction.classList.add("none")
+          gammingNumber.classList.add("none")
+          gammingChoose.classList.remove("none")
 
           // 文字
           textTop.innerText = `${characterList[idx].id} 號啟動角色技能`
           gammingTips.innerText = `(${characterList[idx].character}) 請選擇你要帶走的對象🩸`
-
+          chooses[0].innerText = "帶人"
+          chooses[1].innerText = "不帶"
           return
         }
 
         // TODO alert 順序 非獵人 or 狼王
-        alert(`${characterList[idx].id} 號被投出去了，請發表遺言。`)
+        // alert(`${characterList[idx].id} 號被投出去了，請發表遺言。`)
         night()
         return
       }
@@ -972,4 +978,5 @@ models.forEach((item, idx) => {
   }, false)
 })
 
-// TODO 0.騎士撞過人就不能再撞了OK 1.外加新功能 - 顯示計分在畫面上 2.測試
+// TODO 1.外加新功能 - 顯示計分在畫面上 2.測試
+// !TESET 1.狼刀獵人/狼王(被女巫救/不救)是否天亮會有反應 OK2.被刀獵/狼王互帶OK 3.被投出去獵狼王互帶(還是要問要不要帶人！)OK 4.騎士技能OK 5.預言家/女巫用技能情形OK 6.流暢度 7.狼刀最後一民神，直接結束OK
