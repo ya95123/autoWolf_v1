@@ -269,6 +269,15 @@
   background: #282726 !important;
 }
 
+#scoreRecord {
+  position: absolute;
+  right: 24px;
+  bottom: 16px;
+  color: #fff;
+  font-size: 21px;
+  opacity: 0.8;
+}
+
 @-webkit-keyframes bgShine {
   0% {
     opacity: 0.5;
@@ -346,5 +355,10 @@
   #gamming .choose {
     margin: 0 18px;
     font-size: 23px;
+  }
+  #scoreRecord {
+    right: 16px;
+    bottom: 10px;
+    font-size: 18px;
   }
 }

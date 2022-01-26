@@ -219,6 +219,16 @@
   }
 }
 
+#scoreRecord {
+  position: absolute;
+  right: 24px;
+  bottom: 16px;
+
+  color: $white;
+  font-size: $fs-l;
+  opacity: 0.8;
+}
+
 @keyframes bgShine {
   0% {
     opacity: 0.5;
@@ -308,5 +318,11 @@
       margin: 0 18px;
       font-size: $fs-xl;
     }
+  }
+
+  #scoreRecord {
+    right: 16px;
+    bottom: 10px;
+    font-size: $fs-ml;
   }
 }

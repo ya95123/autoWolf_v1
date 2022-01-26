@@ -13,6 +13,7 @@ const gammingFunction = document.getElementById("gamming-function")
 const gammingNext = document.getElementById("gamming-next")
 const chooses = document.querySelectorAll(".choose")
 const models = document.querySelectorAll(".model")
+const scoreRecord = document.getElementById("scoreRecord")
 const modelData = {
   "cate": [
     // {
@@ -230,6 +231,7 @@ const night = () => {
   gammingFunction.setAttribute("class", "none")
   textTop.classList.remove("text-gold")
   gamming.classList.remove("none")
+  scoreRecord.classList.remove("none")
   textTop.innerText = "天黑請閉眼"
   gammingTips.innerText = "點擊畫面下一步"
   functionState.witch.start = false
@@ -238,6 +240,7 @@ const night = () => {
   functionState.nightKillOrder = 0
   order = 0
   killed = []
+  scoreRecord.innerText = `${score.wolfs} 狼 ${score.gods} 神 ${score.mans} 民`
   score.day++
 
   // 關閉白天的 next、function 監聽
@@ -707,6 +710,9 @@ const numbersChoosesClick = () => {
 
 // *遊戲 - 天亮流程
 const morning = () => {
+  // 狼神人文字紀錄
+  scoreRecord.innerText = `${score.wolfs} 狼 ${score.gods} 神 ${score.mans} 民`
+
   // 是否遊戲結束
   if (isGameOver === true) {
     gameOver()
@@ -930,6 +936,8 @@ const deadOne = (idx) => {
   characterList[idx].alive = false
   // 分數紀錄
   characterList[idx].team === "wolfs" ? score.wolfs-- : characterList[idx].team === "gods" ? score.gods-- : score.mans--
+  // 狼神人文字紀錄
+  scoreRecord.innerText = `${score.wolfs} 狼 ${score.gods} 神 ${score.mans} 民`
 
   // 女巫、預言家的死亡特別紀錄
   if (characterList[idx].character === "女巫") functionState.witch.alive = false
@@ -949,6 +957,7 @@ const gameOver = () => {
   gammingFunction.classList.add("none")
   gammingNext.classList.add("none")
   textTop.classList.remove("text-gold")
+  scoreRecord.classList.add("none")
 
   // 關閉夜晚 app 監聽
   app.removeEventListener("click", nightFlow, false)
