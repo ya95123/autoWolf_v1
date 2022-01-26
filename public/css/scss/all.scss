@@ -157,15 +157,15 @@ img {
   }
 
   .dailog-frame {
-    width: 90vw;
-    max-height: 95vh;
+    width: 90%;
+    max-height: 500px;
     padding: 20px 0px 20px 15px;
   }
 
   .dailog-container {
     width: 100%;
     height: auto;
-    max-height: calc(95vh - 60px);
+    max-height: 458px;
     padding: 0 15px 0 0;
   }
 
