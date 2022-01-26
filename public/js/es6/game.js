@@ -575,14 +575,22 @@ const numbersChoosesClick = () => {
         // *狼王死
         if (characterList[idx].character === "狼王") {
           alert(`${characterList[idx].id} 號是狼人🐺\n狼人死了，騎士活著。`)
+
+          // 死亡紀錄
+          deadOne(idx)
+          // 是否遊戲結束
+          if (isGameOver === true) {
+            gameOver()
+            return
+          }
+
+          // 狼王啟動技能
           textTop.innerText = `${characterList[idx].id} 號啟動角色技能`
           gammingTips.innerText = `(${characterList[idx].character}) 請選擇你要帶走的對象🩸`
 
           // 讓發言順序進到狼王，使下次點擊 numbers 進到狼王的功能裡
           speakOrder[0] = idx
 
-          // 死亡紀錄
-          deadOne(idx)
           return
         }
 
@@ -851,6 +859,13 @@ const nextClick = () => {
   speakOrder.splice(0, 1)
   console.log("發言順序 idx", speakOrder)
 
+  // *遊戲結束，再來一局
+  if (gammingNext.innerText === "再來一局") {
+    console.log("再來一局")
+    location.reload()
+    return
+  }
+
   // *進入投票環節
   if (speakOrder.length === 0) {
     console.log("投票")
@@ -866,7 +881,7 @@ const nextClick = () => {
     return
   }
 
-  // 換誰發言
+  // *換誰發言
   textTop.innerText = `${characterList[speakOrder[0]].id} 號開始發言`
   gammingTips.innerText = `(${characterList[speakOrder[0]].character})`
   if (speakOrder.length === 1) gammingNext.innerText = "投票"
@@ -954,10 +969,10 @@ const gameOver = () => {
   console.log("遊戲結束", score)
   // 背景環境設定
   body.classList.remove("night")
+  textTop.classList.remove("text-gold")
   gammingNumber.classList.add("none")
   gammingFunction.classList.add("none")
-  gammingNext.classList.add("none")
-  textTop.classList.remove("text-gold")
+  gammingNext.classList.remove("none")
   scoreRecord.classList.add("none")
 
   // 關閉夜晚 app 監聽
@@ -965,7 +980,8 @@ const gameOver = () => {
 
   // 文字
   score.wolfs === 0 ? textTop.innerText = "好人獲勝\n🙌" : textTop.innerText = "狼人獲勝\n🐺"
-  gammingTips.innerText = `剩下 ${score.wolfs} 狼 ${score.gods} 神 ${score.mans} 民\n重整頁面，再來一局！`
+  gammingTips.innerText = `剩下 ${score.wolfs} 狼 ${score.gods} 神 ${score.mans} 民`
+  gammingNext.innerText = "再來一局"
 }
 
 // *起始 - 模式畫面 & click 模式選擇
