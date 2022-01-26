@@ -499,6 +499,7 @@ const numbersChoosesClick = () => {
 
         // 是否遊戲結束
         if (isGameOver === true) {
+          alert(`${characterList[idx].id} 號被投出去了，遊戲結束。`)
           gameOver()
           return
         }
