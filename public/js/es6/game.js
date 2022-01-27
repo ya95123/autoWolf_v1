@@ -856,7 +856,7 @@ const handleSpeakOrder = () => {
 const nextClick = () => {
   // *遊戲結束，再來一局
   if (gammingNext.innerText === "再來一局") {
-    console.log(0)
+    console.log("再來一局")
     location.href.includes("github") ? location.href = "https://ya95123.github.io/autoWolf_v1/" : location.href = "/public"
     return
   }
