@@ -855,9 +855,9 @@ const handleSpeakOrder = () => {
 // *click next 下一步
 const nextClick = () => {
   // *遊戲結束，再來一局
-  if (gammingNext.innerText === "再來一局") {
+  if (isGameOver === true) {
     console.log("再來一局")
-    location.href.includes("github") ? location.href = "https://ya95123.github.io/autoWolf_v1/" : location.href = "/public"
+    // location.href.includes("github") ? location.href = "https://ya95123.github.io/autoWolf_v1/" : location.href = "/public"
     return
   }
 
@@ -981,6 +981,9 @@ const gameOver = () => {
   score.wolfs === 0 ? textTop.innerText = "好人獲勝\n🙌" : textTop.innerText = "狼人獲勝\n🐺"
   gammingTips.innerText = `剩下 ${score.wolfs} 狼 ${score.gods} 神 ${score.mans} 民`
   gammingNext.innerText = "再來一局"
+
+  // next 導向連結
+  location.href.includes("github") ? gammingNext.setAttribute("href", "https://ya95123.github.io/autoWolf_v1/") : gammingNext.setAttribute("href", "/public")
 }
 
 // *起始 - 模式畫面 & click 模式選擇

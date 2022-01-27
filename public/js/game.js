@@ -861,9 +861,9 @@ var handleSpeakOrder = function handleSpeakOrder() {
 // *click next 下一步
 var nextClick = function nextClick() {
   // *遊戲結束，再來一局
-  if (gammingNext.innerText === "再來一局") {
+  if (isGameOver === true) {
     console.log("再來一局");
-    location.href.includes("github") ? location.href = "https://ya95123.github.io/autoWolf_v1/" : location.href = "/public";
+    // location.href.includes("github") ? location.href = "https://ya95123.github.io/autoWolf_v1/" : location.href = "/public"
     return;
   }
 
@@ -987,6 +987,9 @@ var gameOver = function gameOver() {
   score.wolfs === 0 ? textTop.innerText = "好人獲勝\n🙌" : textTop.innerText = "狼人獲勝\n🐺";
   gammingTips.innerText = "\u5269\u4E0B " + score.wolfs + " \u72FC " + score.gods + " \u795E " + score.mans + " \u6C11";
   gammingNext.innerText = "再來一局";
+
+  // next 導向連結
+  location.href.includes("github") ? gammingNext.setAttribute("href", "https://ya95123.github.io/autoWolf_v1/") : gammingNext.setAttribute("href", "/public");
 };
 
 // *起始 - 模式畫面 & click 模式選擇
