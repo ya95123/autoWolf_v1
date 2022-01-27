@@ -855,16 +855,16 @@ const handleSpeakOrder = () => {
 
 // *click next 下一步
 const nextClick = () => {
-  // 刪去已發言者
-  speakOrder.splice(0, 1)
-  console.log("發言順序 idx", speakOrder)
-
   // *遊戲結束，再來一局
   if (gammingNext.innerText === "再來一局") {
-    console.log("再來一局")
-    location.reload()
+    console.log(0)
+    location.href.includes("github") ? location.href = "https://ya95123.github.io/autoWolf_v1/" : location.href = "/public"
     return
   }
+
+  // *刪去已發言者
+  speakOrder.splice(0, 1)
+  console.log("發言順序 idx", speakOrder)
 
   // *進入投票環節
   if (speakOrder.length === 0) {
