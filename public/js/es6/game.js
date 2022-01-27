@@ -236,7 +236,6 @@ const night = () => {
   gammingTips.innerText = "點擊畫面下一步"
   functionState.witch.start = false
   functionState.night = true
-  morningCilck = false
   functionState.nightKillOrder = 0
   order = 0
   killed = []
