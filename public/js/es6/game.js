@@ -268,7 +268,7 @@ const nightFlow = (e) => {
 
     // *預言家已死狀態
     if (functionState.prophet.alive === false) {
-      gammingTips.innerText = "(預言家已死👻)\n請選擇你要查驗的對象\n預言家請閉眼😌\n\n點擊畫面下一步"
+      gammingTips.innerText = "請選擇你要查驗的對象\n預言家請閉眼😌\n(預言家已死👻)\n\n點擊畫面下一步"
       order++
       return
     }
@@ -300,19 +300,19 @@ const nightFlow = (e) => {
     if (functionState.witch.alive === false) {
       // 無解、無毒
       if (functionState.witch.antidote === false && functionState.witch.poison === false) {
-        gammingTips.innerText = "(女巫已死👻)\n你已使用完兩瓶藥\n女巫請閉眼😌\n\n點擊畫面下一步"
+        gammingTips.innerText = "你已使用完兩瓶藥\n女巫請閉眼😌\n(女巫已死👻)\n\n點擊畫面下一步"
       }
       // 無解、有毒
       if (functionState.witch.antidote === false && functionState.witch.poison === true) {
-        gammingTips.innerText = "(女巫已死👻)\n你要使用毒藥嗎？\n女巫請閉眼😌\n\n點擊畫面下一步"
+        gammingTips.innerText = "你要使用毒藥嗎？\n女巫請閉眼😌\n(女巫已死👻)\n\n點擊畫面下一步"
       }
       // 有解、無毒
       if (functionState.witch.antidote === true && functionState.witch.poison === false) {
-        gammingTips.innerText = `(女巫已死👻)\n${characterList[killed[0]].id} 號被殺了，請問你要救他嗎？\n女巫請閉眼😌\n\n點擊畫面下一步`
+        gammingTips.innerText = `${characterList[killed[0]].id} 號被殺了，請問你要救他嗎？\n女巫請閉眼😌\n(女巫已死👻)\n\n點擊畫面下一步`
       }
       // 有解、有毒
       if (functionState.witch.antidote === true && functionState.witch.poison === true) {
-        gammingTips.innerText = `(女巫已死👻)\n${characterList[killed[0]].id} 號被殺了，請問你要救他嗎？\n你要使用毒藥嗎？\n女巫請閉眼😌\n\n點擊畫面下一步`
+        gammingTips.innerText = `${characterList[killed[0]].id} 號被殺了，請問你要救他嗎？\n你要使用毒藥嗎？\n女巫請閉眼😌\n(女巫已死👻)\n\n點擊畫面下一步`
       }
       order++
       return
@@ -999,7 +999,7 @@ models.forEach((item, idx) => {
 
   // 設定 model 點擊事件 -> 確定模式
   item.addEventListener("click", () => {
-    alert("請先推派一位上帝(主持人)，讓上帝跟著頁面引導流程，再開始發身分、進行遊戲😊\n💡上帝在帶領時，括弧內的文字請不要唸出來唷！")
+    alert("請先推派一位上帝(主持人)，跟著頁面引導流程，發身分、進行遊戲😊\n💡上帝在帶領時，括弧內的文字請不要唸出來唷！")
     selectModel(idx)
   }, false)
 })
