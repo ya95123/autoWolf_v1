@@ -268,7 +268,7 @@ var nightFlow = function nightFlow(e) {
 
     // *預言家已死狀態
     if (functionState.prophet.alive === false) {
-      gammingTips.innerText = "(預言家已死👻)\n請選擇你要查驗的對象\n預言家請閉眼😌\n\n點擊畫面下一步";
+      gammingTips.innerText = "請選擇你要查驗的對象\n預言家請閉眼😌\n(預言家已死👻)\n\n點擊畫面下一步";
       order++;
       return;
     }
@@ -300,19 +300,19 @@ var nightFlow = function nightFlow(e) {
     if (functionState.witch.alive === false) {
       // 無解、無毒
       if (functionState.witch.antidote === false && functionState.witch.poison === false) {
-        gammingTips.innerText = "(女巫已死👻)\n你已使用完兩瓶藥\n女巫請閉眼😌\n\n點擊畫面下一步";
+        gammingTips.innerText = "你已使用完兩瓶藥\n女巫請閉眼😌\n(女巫已死👻)\n\n點擊畫面下一步";
       }
       // 無解、有毒
       if (functionState.witch.antidote === false && functionState.witch.poison === true) {
-        gammingTips.innerText = "(女巫已死👻)\n你要使用毒藥嗎？\n女巫請閉眼😌\n\n點擊畫面下一步";
+        gammingTips.innerText = "你要使用毒藥嗎？\n女巫請閉眼😌\n(女巫已死👻)\n\n點擊畫面下一步";
       }
       // 有解、無毒
       if (functionState.witch.antidote === true && functionState.witch.poison === false) {
-        gammingTips.innerText = "(\u5973\u5DEB\u5DF2\u6B7B\uD83D\uDC7B)\n" + characterList[killed[0]].id + " \u865F\u88AB\u6BBA\u4E86\uFF0C\u8ACB\u554F\u4F60\u8981\u6551\u4ED6\u55CE\uFF1F\n\u5973\u5DEB\u8ACB\u9589\u773C\uD83D\uDE0C\n\n\u9EDE\u64CA\u756B\u9762\u4E0B\u4E00\u6B65";
+        gammingTips.innerText = characterList[killed[0]].id + " \u865F\u88AB\u6BBA\u4E86\uFF0C\u8ACB\u554F\u4F60\u8981\u6551\u4ED6\u55CE\uFF1F\n\u5973\u5DEB\u8ACB\u9589\u773C\uD83D\uDE0C\n(\u5973\u5DEB\u5DF2\u6B7B\uD83D\uDC7B)\n\n\u9EDE\u64CA\u756B\u9762\u4E0B\u4E00\u6B65";
       }
       // 有解、有毒
       if (functionState.witch.antidote === true && functionState.witch.poison === true) {
-        gammingTips.innerText = "(\u5973\u5DEB\u5DF2\u6B7B\uD83D\uDC7B)\n" + characterList[killed[0]].id + " \u865F\u88AB\u6BBA\u4E86\uFF0C\u8ACB\u554F\u4F60\u8981\u6551\u4ED6\u55CE\uFF1F\n\u4F60\u8981\u4F7F\u7528\u6BD2\u85E5\u55CE\uFF1F\n\u5973\u5DEB\u8ACB\u9589\u773C\uD83D\uDE0C\n\n\u9EDE\u64CA\u756B\u9762\u4E0B\u4E00\u6B65";
+        gammingTips.innerText = characterList[killed[0]].id + " \u865F\u88AB\u6BBA\u4E86\uFF0C\u8ACB\u554F\u4F60\u8981\u6551\u4ED6\u55CE\uFF1F\n\u4F60\u8981\u4F7F\u7528\u6BD2\u85E5\u55CE\uFF1F\n\u5973\u5DEB\u8ACB\u9589\u773C\uD83D\uDE0C\n(\u5973\u5DEB\u5DF2\u6B7B\uD83D\uDC7B)\n\n\u9EDE\u64CA\u756B\u9762\u4E0B\u4E00\u6B65";
       }
       order++;
       return;
@@ -999,7 +999,7 @@ models.forEach(function (item, idx) {
 
   // 設定 model 點擊事件 -> 確定模式
   item.addEventListener("click", function () {
-    alert("請先推派一位上帝(主持人)，讓上帝跟著頁面引導流程，再開始發身分、進行遊戲😊\n💡上帝在帶領時，括弧內的文字請不要唸出來唷！");
+    alert("請先推派一位上帝(主持人)，跟著頁面引導流程，發身分、進行遊戲😊\n💡上帝在帶領時，括弧內的文字請不要唸出來唷！");
     selectModel(idx);
   }, false);
 });
