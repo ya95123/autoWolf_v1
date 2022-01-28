@@ -999,6 +999,7 @@ models.forEach(function (item, idx) {
 
   // 設定 model 點擊事件 -> 確定模式
   item.addEventListener("click", function () {
+    alert("請先推派一位上帝(主持人)，讓上帝跟著頁面引導流程，再開始發身分、進行遊戲😊\n💡上帝在帶領時，括弧內的文字請不要唸出來唷！");
     selectModel(idx);
   }, false);
 });
