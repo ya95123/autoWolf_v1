@@ -308,11 +308,11 @@ const nightFlow = (e) => {
       }
       // 有解、無毒
       if (functionState.witch.antidote === true && functionState.witch.poison === false) {
-        gammingTips.innerText = `${characterList[killed[0]].id} 號被殺了，請問你要救他嗎？\n女巫請閉眼😌\n(女巫已死👻)\n\n點擊畫面下一步`
+        gammingTips.innerText = `你要使用解藥救人嗎？\n女巫請閉眼😌\n(女巫已死👻)\n\n點擊畫面下一步`
       }
       // 有解、有毒
       if (functionState.witch.antidote === true && functionState.witch.poison === true) {
-        gammingTips.innerText = `${characterList[killed[0]].id} 號被殺了，請問你要救他嗎？\n你要使用毒藥嗎？\n女巫請閉眼😌\n(女巫已死👻)\n\n點擊畫面下一步`
+        gammingTips.innerText = `你要使用解藥救人嗎？\n你要使用毒藥嗎？\n女巫請閉眼😌\n(女巫已死👻)\n\n點擊畫面下一步`
       }
       order++
       return
@@ -331,7 +331,7 @@ const nightFlow = (e) => {
     // 有解藥
     if (functionState.witch.antidote === true) {
       // 是否刀到女巫 -> 是(不能自救)
-      characterList[killed[0]].character === "女巫" ? gammingTips.innerText = `${characterList[killed[0]].id} 號被殺了，請問你要救他嗎？\n(女巫不能自救)` : gammingTips.innerText = `${characterList[killed[0]].id} 號被殺了，請問你要救他嗎？`
+      characterList[killed[0]].character === "女巫" ? gammingTips.innerText = `你要使用解藥救人嗎？\n(${characterList[killed[0]].id} 號被殺了)\n(女巫不能自救)` : gammingTips.innerText = `你要使用解藥救人嗎？\n(${characterList[killed[0]].id} 號被殺了)`
       chooses[0].innerText = "救"
       chooses[1].innerText = "不救"
       return

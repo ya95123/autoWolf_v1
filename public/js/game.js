@@ -308,11 +308,11 @@ var nightFlow = function nightFlow(e) {
       }
       // 有解、無毒
       if (functionState.witch.antidote === true && functionState.witch.poison === false) {
-        gammingTips.innerText = characterList[killed[0]].id + " \u865F\u88AB\u6BBA\u4E86\uFF0C\u8ACB\u554F\u4F60\u8981\u6551\u4ED6\u55CE\uFF1F\n\u5973\u5DEB\u8ACB\u9589\u773C\uD83D\uDE0C\n(\u5973\u5DEB\u5DF2\u6B7B\uD83D\uDC7B)\n\n\u9EDE\u64CA\u756B\u9762\u4E0B\u4E00\u6B65";
+        gammingTips.innerText = "\u4F60\u8981\u4F7F\u7528\u89E3\u85E5\u6551\u4EBA\u55CE\uFF1F\n\u5973\u5DEB\u8ACB\u9589\u773C\uD83D\uDE0C\n(\u5973\u5DEB\u5DF2\u6B7B\uD83D\uDC7B)\n\n\u9EDE\u64CA\u756B\u9762\u4E0B\u4E00\u6B65";
       }
       // 有解、有毒
       if (functionState.witch.antidote === true && functionState.witch.poison === true) {
-        gammingTips.innerText = characterList[killed[0]].id + " \u865F\u88AB\u6BBA\u4E86\uFF0C\u8ACB\u554F\u4F60\u8981\u6551\u4ED6\u55CE\uFF1F\n\u4F60\u8981\u4F7F\u7528\u6BD2\u85E5\u55CE\uFF1F\n\u5973\u5DEB\u8ACB\u9589\u773C\uD83D\uDE0C\n(\u5973\u5DEB\u5DF2\u6B7B\uD83D\uDC7B)\n\n\u9EDE\u64CA\u756B\u9762\u4E0B\u4E00\u6B65";
+        gammingTips.innerText = "\u4F60\u8981\u4F7F\u7528\u89E3\u85E5\u6551\u4EBA\u55CE\uFF1F\n\u4F60\u8981\u4F7F\u7528\u6BD2\u85E5\u55CE\uFF1F\n\u5973\u5DEB\u8ACB\u9589\u773C\uD83D\uDE0C\n(\u5973\u5DEB\u5DF2\u6B7B\uD83D\uDC7B)\n\n\u9EDE\u64CA\u756B\u9762\u4E0B\u4E00\u6B65";
       }
       order++;
       return;
@@ -331,7 +331,7 @@ var nightFlow = function nightFlow(e) {
     // 有解藥
     if (functionState.witch.antidote === true) {
       // 是否刀到女巫 -> 是(不能自救)
-      characterList[killed[0]].character === "女巫" ? gammingTips.innerText = characterList[killed[0]].id + " \u865F\u88AB\u6BBA\u4E86\uFF0C\u8ACB\u554F\u4F60\u8981\u6551\u4ED6\u55CE\uFF1F\n(\u5973\u5DEB\u4E0D\u80FD\u81EA\u6551)" : gammingTips.innerText = characterList[killed[0]].id + " \u865F\u88AB\u6BBA\u4E86\uFF0C\u8ACB\u554F\u4F60\u8981\u6551\u4ED6\u55CE\uFF1F";
+      characterList[killed[0]].character === "女巫" ? gammingTips.innerText = "\u4F60\u8981\u4F7F\u7528\u89E3\u85E5\u6551\u4EBA\u55CE\uFF1F\n(" + characterList[killed[0]].id + " \u865F\u88AB\u6BBA\u4E86)\n(\u5973\u5DEB\u4E0D\u80FD\u81EA\u6551)" : gammingTips.innerText = "\u4F60\u8981\u4F7F\u7528\u89E3\u85E5\u6551\u4EBA\u55CE\uFF1F\n(" + characterList[killed[0]].id + " \u865F\u88AB\u6BBA\u4E86)";
       chooses[0].innerText = "救";
       chooses[1].innerText = "不救";
       return;
